@@ -1,0 +1,7 @@
+{
+  "name": "ihm-estampas",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
