@@ -3,14 +3,15 @@ import { AlertController, LoadingController, NavController } from '@ionic/angula
 import { SupabaseService } from '../services/supabase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { error } from 'console';
+import { ScreenOrientation, OrientationLockOptions } from '@capacitor/screen-orientation'
+import { ViewWillEnter } from '@ionic/angular'
 
 @Component({
   selector: 'app-entrar',
   templateUrl: './entrar.page.html',
   styleUrls: ['./entrar.page.scss'],
 })
-export class EntrarPage implements OnInit {
+export class EntrarPage implements OnInit, ViewWillEnter {
   credencias!: FormGroup;
   constructor(
     private supabase: SupabaseService, 
@@ -26,6 +27,11 @@ export class EntrarPage implements OnInit {
       password: ['', Validators.required]
     })
   }
+
+  ionViewWillEnter(): void {
+    const options: OrientationLockOptions = { orientation: 'portrait' };
+    ScreenOrientation.lock(options);
+}
 
   async entrar(){
     const loading = await this.loadCtrl.create()

@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'ihm-estampas',
+  appId: 'pt.grupo8.ihmEstampas',
+  appName: 'PrintPhotos',
   webDir: 'www'
 };
 
