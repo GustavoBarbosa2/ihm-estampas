@@ -35,7 +35,7 @@ export class FavoritosService {
 
   async eliminarFavorito(id: number){
     const index = this.favoritos.findIndex(fav => fav.id === id)
-    if(index > 0){
+    if(index >= 0){
       this.favoritos.splice(index, 1)
       await this.storage.set('favoritos', this.favoritos)
     }

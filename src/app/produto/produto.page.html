@@ -1,76 +1,101 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Detalhes do Produto</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true" >
-  <ion-header collapse="condense">
+  <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-back-button></ion-back-button>
       </ion-buttons>
-      <ion-title size="large">Detalhes do Produto</ion-title>
+      <ion-title>Detalhes do Produto</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-card>
-    <img src={{produto?.imagem}}/>
-    <ion-card-header>
-      <ion-card-title>Nome: {{ produto?.nome }}</ion-card-title>
-      <ion-card-subtitle>Preço: {{ produto?.preco }} €</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-    </ion-card-content>
-  </ion-card>
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title size="large">Detalhes do Produto</ion-title>
+      </ion-toolbar>
+    </ion-header>
 
-  <div class="detalhesProduto">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-button id="click-trigger" class="buttonImage">
-              <ion-icon slot="icon-only" name="image-outline"></ion-icon>
-            </ion-button>
-            <ion-popover trigger="click-trigger" triggerAction="click" side="top" alignment="center">
-              <ng-template>
-                <ion-content class="ion-padding">
-                  
-                </ion-content>
-              </ng-template>
-            </ion-popover>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            Cor: {{produto?.cor}}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            Tamanho: {{produto?.tamanho}}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-button class="botao" color="blue-primary" (click)="adicionarCarrinho()">
-              <ion-icon slot="start" name="cart-outline"></ion-icon>
-              Adicionar ao carrinho
-            </ion-button>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <ion-item class="listas">
-              <ion-label> Adicionar aos favoritos </ion-label><ion-icon name="heart-outline"></ion-icon>
-              <ion-select (ionChange)="adicionarLista()">
-                <ion-select-option value="favorito">Favorito</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-  </div>
-</ion-content>
+    <ion-card>
+      <img src={{produto?.imagem}} class="produto-imagem"/>
+      <img *ngIf="produto?.imagemCarregada" src="{{ produto?.imagemCarregada }}" [ngClass]="imagemClass" />
+      <ion-card-header>
+        <ion-card-title>Nome: {{ produto?.nome }}</ion-card-title>
+        <ion-card-subtitle>Preço: {{ produto?.preco }} €</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="detalhesProduto">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button color="blue-primary" id="click-trigger" class="buttonImage">
+                <ion-icon slot="icon-only" name="image-outline"></ion-icon>
+              </ion-button>
+              <ion-popover trigger="click-trigger" triggerAction="click" side="top" alignment="center">
+                <ng-template>
+                  <ion-content class="ion-padding">
+                    <ion-grid class="ion-text-center">
+                      <ion-row>
+                        <ion-col>
+                          <ion-button color="blue-primary" (click)="escolherImagem()">Escolher Imagem</ion-button>
+                          <img *ngIf="imagem" src="{{ imagem }}" alt="Imagem Personalizada" />
+                        </ion-col>
+                        <ion-row>
+                          <ion-col>
+                            <ion-radio-group (ionChange)="alterarClasseImagem()" [(ngModel)]="posicao">
+                              <ion-list-header>
+                                <ion-label>Posição:</ion-label>
+                              </ion-list-header>
+                            <ion-radio value="esquerda">Esquerda</ion-radio>
+                            <ion-radio value="centro">Centro</ion-radio>
+                            <ion-radio value="direita">Direita</ion-radio>
+                          </ion-radio-group>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col>
+                            <ion-button color="success" (click)="confirmar()">Confirmar</ion-button>
+                          </ion-col>
+                        </ion-row>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-content>
+                </ng-template>
+              </ion-popover>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Cor: {{produto?.cor}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Tamanho: {{produto?.tamanho}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button class="botao" color="blue-primary" (click)="adicionarCarrinho()">
+                <ion-icon slot="start" name="cart-outline"></ion-icon>
+                Adicionar ao carrinho
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item class="listas">
+                <ion-label> Adicionar aos favoritos </ion-label><ion-icon name="heart-outline"></ion-icon>
+                <ion-select (ionChange)="adicionarLista()">
+                  <ion-select-option value="favorito">Favorito</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    </div>
+  </ion-content>

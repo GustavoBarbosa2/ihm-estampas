@@ -10,6 +10,7 @@
     </ion-tab-button>
     <ion-tab-button tab="carrinho" href="/tabs/carrinho">
       <ion-icon aria-hidden="true" name="cart-outline"></ion-icon>
+      <ion-badge *ngIf="quantidadeCarrinho > 0" slot="top">{{ quantidadeCarrinho }}</ion-badge>
       <ion-label>Carrinho</ion-label>
     </ion-tab-button>
     <ion-tab-button tab="conta" href="/tabs/conta">

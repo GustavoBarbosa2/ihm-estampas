@@ -7,6 +7,7 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
   providedIn: 'root'
 })
 export class CarrinhoService {
+  private total: number = 0
   private carrinho: produtos[]
   constructor(private storage: Storage) { 
     this.carrinho = []
@@ -35,10 +36,21 @@ export class CarrinhoService {
 
   async eliminarCarrinho(id: number){
     const index = this.carrinho.findIndex(car => car.id === id)
-    if(index > 0){
+    if(index >= 0){
       this.carrinho.splice(index, 1)
-      await this.storage.set('carrinho', this.carrinho
-      )
+      await this.storage.set('carrinho', this.carrinho)
     }
+  }
+
+  getQuantidadeCarrinho() {
+    return this.carrinho.length
+  }
+
+  async getTotal(){
+    this.total = 0
+    for (let i = 0; i < this.carrinho.length; i++) {
+      this.total += this.carrinho[i].preco
+    }
+    return this.total
   }
 }

@@ -5,6 +5,7 @@ import { produtos as Produtos } from '../services/produtos';
 import { FavoritosService } from '../services/favoritos.service';
 import { CarrinhoService } from '../services/carrinho.service';
 import { AlertController, PopoverController } from '@ionic/angular';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
   selector: 'app-produto',
@@ -13,6 +14,10 @@ import { AlertController, PopoverController } from '@ionic/angular';
 })
 export class ProdutoPage implements OnInit {
   produto!: Produtos  
+  imagem?: string
+  posicao: string = 'centro'
+  imagemClass?: string
+
   constructor(
     private route: ActivatedRoute,
     private supabase: SupabaseService,
@@ -25,6 +30,7 @@ export class ProdutoPage implements OnInit {
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')
     this.produto = await this.supabase.getProdutoById(Number(id))
+    this.imagemClass = this.produto.imagemClass
   }
 
   async adicionarLista(){
@@ -48,10 +54,43 @@ export class ProdutoPage implements OnInit {
           text: 'Adicionar',
           handler: () => {
             this.carrinho.inserirCarrinho(this.produto);
+            this.supabase.mostrarMensagem('Produto adicionado ao carrinho!')
           }
         }
       ]
     });
     await alert.present();
   }
+
+  async escolherImagem(){
+    const image = await Camera.getPhoto({
+      quality: 90,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Photos,
+    });
+
+    this.imagem = image.webPath;
+  }
+
+  async confirmar(){
+    const data = await this.popController.dismiss({
+      imagem: this.imagem,
+      posicao: this.posicao
+    });
+    if(data){
+      this.produto.imagemCarregada = this.imagem
+      this.produto.posicao = this.posicao
+      this.produto.imagemClass = this.imagemClass
+    }
+  }
+  alterarClasseImagem() {
+    if (this.posicao === 'esquerda') {
+      this.imagemClass = 'imagem-esquerda';
+    } else if (this.posicao === 'centro') {
+      this.imagemClass = 'imagem-centro';
+    } else if (this.posicao === 'direita') {
+      this.imagemClass = 'imagem-direita';
+    }
+  }
+
 }

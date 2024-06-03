@@ -1,13 +1,53 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>carrinho</ion-title>
+    <ion-title class="titulo">Carrinho</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">carrinho</ion-title>
+      <ion-title class="titulo" size="large">Carrinho</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <ion-card>
+            <ion-card-header>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list *ngFor="let carrinho of carrinhos">
+                <ion-item>
+                  <ion-thumbnail slot="start" (click)="irDetalhes(carrinho.id)">
+                    <img alt={{carrinho.nome}} src="{{carrinho.imagem}}" />
+                  </ion-thumbnail>
+                  <ion-label>{{carrinho.nome}}</ion-label>
+                  <ion-label>{{carrinho.preco}} €</ion-label>
+                  <ion-button color="danger" (click)="eliminarFavorito(carrinho.id)">
+                    <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row class="informacoesCompra">
+      <ion-col>
+        <ion-text>Resumo da compra:</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Quantidade: {{carrinhos.length}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Total: {{total}} €</ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
