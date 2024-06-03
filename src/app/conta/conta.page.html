@@ -12,15 +12,6 @@
   </ion-header>
 
   <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div class="imageArea" (click)="selectImage()">
-          <span>
-            <ion-icon color="#000" name="camera-outline"></ion-icon>
-            Carregue uma imagem</span>
-        </div>
-      </ion-col>
-    </ion-row>
     <div class="informacoes">
       <ion-row>
         <ion-col *ngIf="utilizador">
@@ -33,5 +24,25 @@
         </ion-col>
       </ion-row>
     </div>
+    <ion-row>
+      <ion-col>
+        <div class="botaoH">
+          <ion-button color="blue-primary" (click)="irHistorico()">
+            <ion-icon slot="start" name="cloud-outline"></ion-icon>
+            VER O HISTORICO DE COMPRAS
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="botaoH">
+          <ion-button color="danger" (click)="sair()">
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            SAIR DA CONTA
+          </ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

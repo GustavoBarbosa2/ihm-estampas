@@ -15,7 +15,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 export class ProdutoPage implements OnInit {
   produto!: Produtos  
   imagem?: string
-  posicao: string = 'centro'
+  posicao: string = ''
   imagemClass?: string
 
   constructor(
@@ -34,8 +34,27 @@ export class ProdutoPage implements OnInit {
   }
 
   async adicionarLista(){
-    await this.favoritos.inserirFavorito(this.produto)
-    this.supabase.mostrarMensagem('Produto adicionado com sucesso')
+    const alert = await this.alertController.create({
+      header: 'Deseja adicionar o produto aos favoritos',
+      message: 'Tem certeza que deseja adicionar este produto aos favoritos?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelar');
+          }
+        },
+        {
+          text: 'Adicionar',
+          handler: () => {
+            this.favoritos.inserirFavorito(this.produto);
+            this.supabase.mostrarMensagem('Produto adicionado aos favoritos!')
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async adicionarCarrinho(){

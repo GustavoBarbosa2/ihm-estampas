@@ -1,6 +1,3 @@
-ion-title{
-  text-align: center;
-}
 
 ion-card{
   ion-card-title{
@@ -41,8 +38,8 @@ ion-card{
 
 .imagem-centro {
   position: absolute;
-  top: 30%;
-  left: 20%;
+  top: 35%;
+  left: 50%;
   width: 80px;
   height: 80px;
   transform: translate(-50%, -50%);
@@ -51,7 +48,7 @@ ion-card{
 .imagem-esquerda {
   position: absolute;
   top: 25%;
-  left: 30px;
+  left: 30%;
   width: 80px;
   height: 80px;
   transform: translateY(-50%);
@@ -60,7 +57,7 @@ ion-card{
 .imagem-direita {
   position: absolute;
   top: 25%;
-  right: 30px;
+  right: 30%;
   width: 80px;
   height: 80px;
   transform: translateY(-50%);

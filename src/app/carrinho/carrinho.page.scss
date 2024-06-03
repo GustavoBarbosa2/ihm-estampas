@@ -1,4 +1,4 @@
-.titulo{
+ion-title{
   text-align: center;
   margin: auto;
 }
@@ -8,6 +8,16 @@
   ion-text{
     font-weight: bold;
     font-size: 15px;
+  }
+}
+
+.finalizarCompra{
+  padding-top: 20%;
+  ion-icon{
+    padding-right: 10px;
+  }
+  ion-button{
+    width: 100%;
   }
 }
 

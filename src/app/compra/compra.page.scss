@@ -1,0 +1,37 @@
+.titulo {
+  text-align: center;
+}
+
+.moradaText {
+  padding-bottom: 10%;
+}
+ion-label {
+  font-size: medium;
+}
+
+ion-radio {
+  padding-bottom: 5%;
+  padding-left: 10%;
+}
+
+img {
+  width: 40px;
+  height: 30px;
+}
+
+.finalizarCompra {
+  ion-icon {
+    padding-right: 10px;
+  }
+  ion-button {
+    width: 100%;
+  }
+}
+
+.informacoesCompra {
+  padding-top: 20%;
+  ion-text {
+    font-weight: bold;
+    font-size: 15px;
+  }
+}

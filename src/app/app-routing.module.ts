@@ -22,6 +22,14 @@ const routes: Routes = [
     path: '',
     redirectTo: 'entrar',
     pathMatch: 'full'
+  },
+  {
+    path: 'compra',
+    loadChildren: () => import('./compra/compra.module').then( m => m.CompraPageModule)
+  },
+  {
+    path: 'historico',
+    loadChildren: () => import('./historico/historico.module').then( m => m.HistoricoPageModule)
   }
 ];
 @NgModule({

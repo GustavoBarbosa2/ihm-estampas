@@ -53,4 +53,9 @@ export class CarrinhoService {
     }
     return this.total
   }
+
+  async limparCarrinho(){
+    this.carrinho = []
+    await this.storage.set('carrinho', this.carrinho)
+  }
 }

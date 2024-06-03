@@ -7,7 +7,6 @@
           <ion-card>
             <ion-card-header>
               <ion-card-title>Os seus favoritos</ion-card-title>
-              <ion-card-subtitle></ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
               <ion-list *ngFor="let favorito of favoritos">
@@ -20,6 +19,11 @@
                   <ion-button color="danger" (click)="eliminarFavorito(favorito.id)">
                     <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                   </ion-button>
+                </ion-item>
+                <ion-item>
+                  <ion-text>
+                    Extras: <img src="{{favorito.imagemCarregada}}"/> <ion-text>   Posição: {{favorito.posicao}}</ion-text>
+                  </ion-text>
                 </ion-item>
               </ion-list>
             </ion-card-content>

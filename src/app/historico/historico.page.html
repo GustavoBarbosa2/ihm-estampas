@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="blue-primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Histórico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="blue-primary">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title size="large">Histórico</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card *ngFor="let compra of compras">
+  <ion-card-header>
+    <ion-card-title>Numero da Encomenda: {{compra.id}}</ion-card-title>
+    <ion-card-subtitle>Preço: {{compra.preco}}€</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>Morada: {{compra.morada}}</p>
+    <p>Envio: {{compra.envio}}</p>
+    <p>Pagamento: {{compra.pagamento}}</p>
+    <p *ngIf="compra.pagamento === 'mbway'">Numero de telefone: {{compra.numeroMBWAY}}</p>
+    <div *ngIf="compra.pagamento === 'multibanco'">
+      <p>Entidade: 14109</p>
+      <p>Referencia: 894 536 763</p>
+      <p>Valor: {{compra.preco}}€</p>
+    </div>
+  </ion-card-content>
+</ion-card>
+<ion-button color="danger" (click)="limpar()">
+  <ion-icon slot="start" name="trash-outline"></ion-icon>
+  LIMPAR HISTÓRICO
+</ion-button>
+</ion-content>

@@ -92,7 +92,6 @@ export class SupabaseService {
 
   async sair(){
     await this.supabaseClient.auth.signOut()
-
     this.route.navigateByUrl('/')
   }
 

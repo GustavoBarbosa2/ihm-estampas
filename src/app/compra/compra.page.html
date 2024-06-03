@@ -1,0 +1,163 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="blue-primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Finalizar Compra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar color="blue-primary">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title size="large" >Finalizar Compra</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            <ion-list *ngFor="let carrinho of carrinho">
+              <ion-item>
+                <ion-thumbnail slot="start" (click)="irDetalhes(carrinho.id)">
+                  <img alt="{{carrinho.nome}}" src="{{carrinho.imagem}}" />
+                </ion-thumbnail>
+                <ion-label>Nome: {{carrinho.nome}}</ion-label>
+                <ion-label>{{carrinho.preco}} €</ion-label>
+                <ion-button
+                  color="danger"
+                  (click)="eliminarFavorito(carrinho.id)"
+                >
+                  <ion-icon
+                    slot="icon-only"
+                    name="close-circle-outline"
+                  ></ion-icon>
+                </ion-button>
+              </ion-item>
+              <ion-item>
+                <ion-text>
+                  Extras: <img src="{{carrinho.imagemCarregada}}" />
+                  <ion-text> Posição: {{carrinho.posicao}}</ion-text>
+                </ion-text>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text class="moradaText">Digite a sua morada: </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-input
+          [(ngModel)]="morada"
+          color="blue-primary"
+          type="text"
+          label="Introduza a sua morada"
+          labelPlacement="floating"
+          fill="outline"
+          placeholder="Introduza a sua morada"
+        ></ion-input>
+        <ion-text color="danger" *ngIf="moradaErro">{{ moradaErro }}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-radio-group [(ngModel)]="envio">
+      <ion-list-header>
+        <ion-label>Metodo de envio:</ion-label>
+      </ion-list-header>
+      <ion-radio value="correio"
+        ><img src="assets/imagens/correio.png" alt="" /> Correio</ion-radio
+      >
+      <ion-radio value="mrw"
+        ><img src="assets/imagens/MRW.png" alt="" /> MRW</ion-radio
+      >
+      <ion-radio value="Nacex"
+        ><img src="assets/imagens/nacex.png" alt="" /> Nacex</ion-radio
+      >
+      <ion-radio value="dhl"
+        ><img src="assets/imagens/dhl.jpg" alt="" /> DHL</ion-radio
+      >
+      <ion-radio value="dpd"
+        ><img src="assets/imagens/dpd.png" alt="" /> DPD</ion-radio
+      >
+    </ion-radio-group>
+    <ion-row>
+      <ion-col>
+        <ion-text color="danger" *ngIf="envioErro">{{ envioErro }}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-radio-group [(ngModel)]="pagamento">
+          <ion-list-header>
+            <ion-label>Metodo de pagamento:</ion-label>
+          </ion-list-header>
+          <ion-radio value="multibanco" (click)="mbwayInputVisible = false"
+            ><img src="assets/imagens/multibanco.png" alt="" />
+            Multibanco</ion-radio
+          >
+          <ion-radio value="mbway" (click)="mbwayInputVisible = true "
+            ><img src="assets/imagens/mbway.png" alt="" /> MBWAY</ion-radio
+          >
+          <ion-radio value="contraReembolso" (click)="mbwayInputVisible = false"
+            ><img src="assets/imagens/contra-reembolso.png" alt="" />
+            Contra-Reembolso</ion-radio
+          >
+        </ion-radio-group>
+        <ion-row>
+          <ion-col>
+            <ion-text color="danger" *ngIf="pagamentoErro"
+              >{{ pagamentoErro }}</ion-text
+            >
+          </ion-col>
+        </ion-row>
+        <ion-input
+          color="blue-primary"
+          *ngIf="mbwayInputVisible"
+          type="tel"
+          label="Introduza o seu numero de telefone"
+          labelPlacement="floating"
+          fill="outline"
+          [(ngModel)]="mbwayValue"
+          placeholder="Introduza o seu numero de telefone"
+        ></ion-input>
+        <ion-text color="danger" *ngIf="mbwayErro">{{ mbwayErro }}</ion-text>
+        <ion-text color="danger" *ngIf="mbwayErro">{{ mbwayErro }}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="informacoesCompra">
+      <ion-col>
+        <ion-text>Resumo da compra:</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Quantidade de produtos: {{carrinho.length}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Preço da personalização: {{extras}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Total: {{total}} €</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="finalizarCompra">
+      <ion-col>
+        <ion-button color="blue-primary" (click)="comprar()">
+          <ion-icon name="cart-outline"></ion-icon>CONFIRMAR E PAGAR</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

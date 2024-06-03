@@ -1,33 +1,35 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title class="titulo">Carrinho</ion-title>
+  <ion-toolbar color="blue-primary">
+    <ion-title >Carrinho</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title class="titulo" size="large">Carrinho</ion-title>
+    <ion-toolbar color="blue-primary">
+      <ion-title  size="large">Carrinho</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-grid>
     <ion-row>
       <ion-col>
           <ion-card>
-            <ion-card-header>
-            </ion-card-header>
             <ion-card-content>
               <ion-list *ngFor="let carrinho of carrinhos">
                 <ion-item>
                   <ion-thumbnail slot="start" (click)="irDetalhes(carrinho.id)">
                     <img alt={{carrinho.nome}} src="{{carrinho.imagem}}" />
                   </ion-thumbnail>
-                  <ion-label>{{carrinho.nome}}</ion-label>
+                  <ion-label>Nome: {{carrinho.nome}}</ion-label>
                   <ion-label>{{carrinho.preco}} €</ion-label>
                   <ion-button color="danger" (click)="eliminarFavorito(carrinho.id)">
                     <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
                   </ion-button>
+                </ion-item>
+                <ion-item>
+                  <ion-text>
+                    Extras: <img src="{{carrinho.imagemCarregada}}"/> <ion-text>   Posição: {{carrinho.posicao}}</ion-text>
+                  </ion-text>
                 </ion-item>
               </ion-list>
             </ion-card-content>
@@ -41,12 +43,22 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-text>Quantidade: {{carrinhos.length}}</ion-text>
+        <ion-text>Quantidade de produtos: {{carrinhos.length}}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text>Preço da personalização: {{extras}}</ion-text>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-text>Total: {{total}} €</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="finalizarCompra">
+      <ion-col>
+        <ion-button color="blue-primary" (click)="finalizarCompra()"> <ion-icon name="cart-outline"></ion-icon>Finalizar Compra</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
