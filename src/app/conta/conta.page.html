@@ -1,0 +1,37 @@
+<ion-header [translucent]="true" class="ion-text-center">
+  <ion-toolbar color="blue-primary">
+    <ion-title>Minha Conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-header collapse="condense">
+    <ion-toolbar color="blue-primary">
+      <ion-title size="large">Minha Conta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="imageArea" (click)="selectImage()">
+          <span>
+            <ion-icon color="#000" name="camera-outline"></ion-icon>
+            Carregue uma imagem</span>
+        </div>
+      </ion-col>
+    </ion-row>
+    <div class="informacoes">
+      <ion-row>
+        <ion-col *ngIf="utilizador">
+          Nome: {{utilizador?.data.nome}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="utilizador">
+          Email: {{utilizador?.data.email}}
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

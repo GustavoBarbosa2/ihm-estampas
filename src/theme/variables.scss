@@ -1,2 +1,20 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+	--ion-color-blue-primary: #0097B2;
+	--ion-color-blue-primary-rgb: 0,151,178;
+	--ion-color-blue-primary-contrast: #fff;
+	--ion-color-blue-primary-contrast-rgb: 0,0,0;
+	--ion-color-blue-primary-shade: #00859d;
+	--ion-color-blue-primary-tint: #1aa1ba;
+}
+
+.ion-color-blue-primary {
+	--ion-color-base: var(--ion-color-blue-primary);
+	--ion-color-base-rgb: var(--ion-color-blue-primary-rgb);
+	--ion-color-contrast: var(--ion-color-blue-primary-contrast);
+	--ion-color-contrast-rgb: var(--ion-color-blue-primary-contrast-rgb);
+	--ion-color-shade: var(--ion-color-blue-primary-shade);
+	--ion-color-tint: var(--ion-color-blue-primary-tint);
+}

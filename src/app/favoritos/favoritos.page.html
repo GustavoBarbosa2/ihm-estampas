@@ -1,0 +1,30 @@
+
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Os seus favoritos</ion-card-title>
+              <ion-card-subtitle></ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-list *ngFor="let favorito of favoritos">
+                <ion-item>
+                  <ion-thumbnail slot="start" (click)="irDetalhes(favorito.id)">
+                    <img alt={{favorito.nome}} src="{{favorito.imagem}}" />
+                  </ion-thumbnail>
+                  <ion-label>{{favorito.nome}}</ion-label>
+                  <ion-label>{{favorito.preco}} €</ion-label>
+                  <ion-button color="danger" (click)="eliminarFavorito(favorito.id)">
+                    <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </ion-card-content>
+          </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

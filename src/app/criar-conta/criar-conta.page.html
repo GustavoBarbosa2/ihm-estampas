@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-img src="src/assets/imagens/logo.png" src="logo"></ion-img>
+  <div class="textoBemVindo">
+    <ion-text>Bem-Vindo à <ion-text color="blue-primary">PrintPhotos Lda.</ion-text></ion-text>
+  </div>
+
+  <form (ngSubmit)="criarConta()" [formGroup]="credenciais">
+    <div class="input">
+      <ion-input formControlName="nome" label="Introduza o seu nome" labelPlacement="floating" fill="outline" placeholder="Introduza o seu nome"></ion-input>
+      <div *ngIf="credenciais.get('nome')?.touched && credenciais.get('nome')?.invalid">
+        <ion-text color="danger" *ngIf="credenciais.get('nome')?.errors?.['required']">O nome é obrigatória.</ion-text>
+      </div>
+      <ion-input formControlName="email" type="email" label="Introduza o seu email" labelPlacement="floating" fill="outline" placeholder="Introduza o seu email"></ion-input>
+      <div *ngIf="credenciais.get('email')?.touched && credenciais.get('email')?.invalid">
+        <ion-text color="danger" *ngIf="credenciais.get('email')?.errors?.['required']">O email é obrigatória.</ion-text>
+        <ion-text color="danger" *ngIf="credenciais.get('email')?.errors?.['email']">O email deve ser válido.</ion-text>
+      </div>
+      <ion-input formControlName="password" type="password" label="Introduza a sua palavra-passe" labelPlacement="floating" fill="outline" placeholder="Introduza a sua palavra-passe">
+        <ion-input-password-toggle slot="end" color="blue-primary"></ion-input-password-toggle>
+      </ion-input>
+      <div *ngIf="credenciais.get('password')?.touched && credenciais.get('password')?.invalid">
+        <ion-text color="danger" *ngIf="credenciais.get('password')?.errors?.['required']">A palavra-passe é obrigatória.</ion-text>
+      </div>
+    </div>
+
+    <div class="entrar">
+      <ion-button type="submit" color="blue-primary" expand="default" shape="round" [disabled]="!credenciais.valid">
+        Criar Conta
+      </ion-button>
+    </div>
+  </form>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-text>Já tens uma conta? <ion-button color="blue-primary" (click)="entrarConta()" expand="block" fill="clear" shape="round">
+          Entre agora!
+        </ion-button></ion-text>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

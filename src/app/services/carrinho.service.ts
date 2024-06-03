@@ -1,0 +1,44 @@
+import { Injectable } from '@angular/core';
+import { produtos } from './produtos';
+import { Storage } from '@ionic/storage-angular';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CarrinhoService {
+  private carrinho: produtos[]
+  constructor(private storage: Storage) { 
+    this.carrinho = []
+    this.init()
+  }
+
+  async init(){
+    await this.storage.defineDriver(CordovaSQLiteDriver)
+    const storage = await this.storage.create()
+    const carrinho = await storage.get('carrinho')
+    if(carrinho){
+      this.carrinho = carrinho
+    }
+  }
+
+  async getCarrinho(): Promise<produtos[]>{
+    return this.carrinho
+  }
+
+  async inserirCarrinho(carinho: produtos){
+    if (!this.carrinho.includes(carinho)) {
+      this.carrinho.push(carinho);
+      await this.storage.set('carrinho', this.carrinho);
+    }
+  }
+
+  async eliminarCarrinho(id: number){
+    const index = this.carrinho.findIndex(car => car.id === id)
+    if(index > 0){
+      this.carrinho.splice(index, 1)
+      await this.storage.set('carrinho', this.carrinho
+      )
+    }
+  }
+}

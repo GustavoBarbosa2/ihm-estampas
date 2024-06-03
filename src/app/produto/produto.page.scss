@@ -1,0 +1,40 @@
+ion-title{
+  text-align: center;
+}
+
+ion-card{
+  ion-card-title{
+    font-size: 18px;
+  }
+  ion-card-subtitle{
+    font-size: 16px;
+  }
+}
+
+.detalhesProduto{
+  ion-row{
+    padding-top: 10px;
+    font-size: 17px;
+  }
+  ion-button{
+    width: 100%;
+  }
+  ion-fab{
+    padding-left: 60%;
+  }
+  .buttonImage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 15%;
+  }
+}
+
+.listas{
+  padding-top: 5%;
+}
+
+.botao{
+  padding-top: 5%;
+}

@@ -1,0 +1,78 @@
+<ion-header [translucent]="true" class="ion-text-center">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="Voltar" icon="caret-back"></ion-back-button>
+    </ion-buttons>
+    <ion-searchbar clear-icon="trash-bin" placeholder="Pesquise o nome do artigo" (ionChange)="pesquisarProduto()" [(ngModel)]="pesquisa"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-text-center">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button text="Voltar" icon="caret-back"></ion-back-button>
+      </ion-buttons>
+      <ion-searchbar clear-icon="trash-bin" placeholder="Pesquise o nome do artigo" (ionChange)="pesquisarProduto()" [(ngModel)]="pesquisa"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+        <ion-label>Tamanho</ion-label>
+        <ion-select [(ngModel)]="tamanhoSelecionado" (ionChange)="pesquisarProduto()">
+          <ion-select-option value="XL">XL</ion-select-option>
+          <ion-select-option value="L">L</ion-select-option>
+          <ion-select-option value="M">M</ion-select-option>
+          <ion-select-option value="S">S</ion-select-option>
+        </ion-select>
+      </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Cor</ion-label>
+          <ion-select [(ngModel)]="corSelecionada" (ionChange)="pesquisarProduto()">
+            <ion-select-option value="Preto">Preto</ion-select-option>
+            <ion-select-option value="Branco">Branco</ion-select-option>
+            <ion-select-option value="Azul">Azul</ion-select-option>
+            <ion-select-option value="Amarelo">Amarelo</ion-select-option>
+            <ion-select-option value="Vermelho">Vermelho</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="blue-primary">
+          <ion-icon slot="start" name="funnel-outline"></ion-icon>
+          Filtros
+        </ion-button>
+        <ion-button color="danger" (click)="limparFiltros()">
+          <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+          Limpar filtros
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="card-small">
+        <ion-card *ngFor="let produto of produtos"  (click)="irDetalhes(produto.id)">
+          <img src={{produto.imagem}}/>
+          <ion-card-header>
+            <ion-card-title>
+             Nome: {{produto.nome}}
+            </ion-card-title>
+            <ion-card-subtitle>
+             Preço: {{produto.preco}} €
+            </ion-card-subtitle>
+            <ion-card-content>
+              Tamanho: {{produto.tamanho}}    Cor: {{produto.cor}}
+            </ion-card-content>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

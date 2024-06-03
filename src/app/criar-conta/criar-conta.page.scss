@@ -1,0 +1,18 @@
+.textoBemVindo{
+  margin-top: 50%;
+}
+
+.input{
+  margin-top: 20px;
+  ion-input{
+    --border-radius: 15px;
+    font-size: 14px;
+    margin-bottom: 3%;
+    --highlight-color-focused: var(--ion-color-blue-primary);
+    --highlight-color-invalid: var(--ion-color-danger);
+  }
+  ion-text{
+    font-size: 13px;
+    padding-bottom: 5px;
+  }
+}
