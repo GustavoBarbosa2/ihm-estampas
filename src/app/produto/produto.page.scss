@@ -62,3 +62,22 @@ ion-card{
   height: 80px;
   transform: translateY(-50%);
 }
+
+::ng-deep ion-popover .popover-content {
+  max-height: 200px; 
+  overflow-y: auto; 
+}
+
+.imagemPersonalizada{
+ width: 200px;
+ height: 200px;
+}
+
+.produto-imagem-container{
+  position: relative;
+}
+
+.buttonfav{
+  
+  width: 100%;
+}

@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SupabaseService } from '../services/supabase.service';
 import { produtos as Produtos, produtos} from '../services/produtos';
 import { Router } from '@angular/router';
+import { IonPopover, ViewDidEnter } from '@ionic/angular';
+import { CallTracker } from 'assert';
 
 @Component({
   selector: 'app-loja',
   templateUrl: './loja.page.html',
   styleUrls: ['./loja.page.scss'],
 })
-export class LojaPage implements OnInit {
-  tamanhoSelecionado!: string;
-  corSelecionada!: string;
+export class LojaPage implements OnInit, ViewDidEnter {
+  @ViewChild('filterPopover') filterPopover!: IonPopover;
+  
+  tamanhoSelecionado: string = '';
+  corSelecionada: string = '';
   produtos: Produtos[] = []
   produtosCopy: Produtos[] = []
   pesquisa: string = ''
@@ -23,6 +27,9 @@ export class LojaPage implements OnInit {
   ngOnInit() {
     this.carregarProdutos()
   }
+
+  async ionViewDidEnter(){
+    }
 
   async carregarProdutos(){
     try{
@@ -51,5 +58,9 @@ export class LojaPage implements OnInit {
     this.tamanhoSelecionado = '';
     this.corSelecionada = '';
     this.pesquisarProduto();
+  }
+
+  fecharPop(){
+    this.filterPopover.dismiss()
   }
 }

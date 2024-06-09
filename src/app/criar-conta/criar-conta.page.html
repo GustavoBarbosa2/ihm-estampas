@@ -20,6 +20,7 @@
       </ion-input>
       <div *ngIf="credenciais.get('password')?.touched && credenciais.get('password')?.invalid">
         <ion-text color="danger" *ngIf="credenciais.get('password')?.errors?.['required']">A palavra-passe é obrigatória.</ion-text>
+        <ion-text color="danger" *ngIf="credenciais.get('password')?.errors?.['minlength']">A palavra-passe deve ter pelo menos 8 carateres."></ion-text>
       </div>
     </div>
 

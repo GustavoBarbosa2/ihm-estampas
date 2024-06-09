@@ -16,12 +16,14 @@
       <ion-title size="large">Histórico</ion-title>
     </ion-toolbar>
   </ion-header>
+  <div class="historicoVazio">
+    <ion-text *ngIf="compras.length === 0">Nenhuma compra finalizada! Faça já uma!</ion-text>
+  </div>
   <ion-card *ngFor="let compra of compras">
   <ion-card-header>
     <ion-card-title>Numero da Encomenda: {{compra.id}}</ion-card-title>
     <ion-card-subtitle>Preço: {{compra.preco}}€</ion-card-subtitle>
   </ion-card-header>
-
   <ion-card-content>
     <p>Morada: {{compra.morada}}</p>
     <p>Envio: {{compra.envio}}</p>

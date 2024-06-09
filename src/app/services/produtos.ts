@@ -7,6 +7,7 @@ export interface produtos{
   imagemClass?: string
   imagemCarregada?: string
   quantidade: number
+  isFavorito?: boolean
   cor: string
   tamanho: string
   created_at?:Date

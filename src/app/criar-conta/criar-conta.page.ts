@@ -23,7 +23,7 @@ export class CriarContaPage implements OnInit {
   ngOnInit() {
     this.credenciais = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required]],
       nome: ['', Validators.required]
     })
   }
@@ -60,7 +60,7 @@ export class CriarContaPage implements OnInit {
       
     }catch (error: any){
       await loading.dismiss()
-      this.supabase.mostrarErro('Erro ao criar a conta', error.message)
+      this.supabase.mostrarErro('Erro ao criar a conta', 'Verifique os todos os campos')
     }
   }
 }

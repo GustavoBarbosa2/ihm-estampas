@@ -33,7 +33,7 @@ export class FavoritosService {
     }
   }
 
-  async eliminarFavorito(id: number){
+  async eliminarFavorito(id?: number){
     const index = this.favoritos.findIndex(fav => fav.id === id)
     if(index >= 0){
       this.favoritos.splice(index, 1)

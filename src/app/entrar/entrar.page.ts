@@ -42,7 +42,7 @@ export class EntrarPage implements OnInit, ViewWillEnter {
       this.route.navigateByUrl('/tabs/loja', {replaceUrl: true})
     }, async error => {
       await loading.dismiss()
-      this.supabase.mostrarErro('Erro ao entrar na conta', error.message)
+      this.supabase.mostrarErro('Erro ao entrar na conta', 'Verifique os seus dados')
     })
   }
   async criarConta(){

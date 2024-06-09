@@ -14,8 +14,11 @@
     <ion-row>
       <ion-col>
           <ion-card>
+            <ion-card-header>
+              <ion-card-title *ngIf="carrinhos.length === 0">Nenhum produto no carrinho! Adicione já!</ion-card-title>
+            </ion-card-header>
             <ion-card-content>
-              <ion-list *ngFor="let carrinho of carrinhos">
+              <ion-list *ngFor="let carrinho of carrinhos; let i = index">
                 <ion-item>
                   <ion-thumbnail slot="start" (click)="irDetalhes(carrinho.id)">
                     <img alt={{carrinho.nome}} src="{{carrinho.imagem}}" />
@@ -28,7 +31,30 @@
                 </ion-item>
                 <ion-item>
                   <ion-text>
-                    Extras: <img src="{{carrinho.imagemCarregada}}"/> <ion-text>   Posição: {{carrinho.posicao}}</ion-text>
+                    <ion-button color="blue-primary" [id]="'modalCarrinho' + i" expand="block" fill="clear" shape="round">
+                      Ver extras
+                    </ion-button>
+                    <ion-modal #modal [trigger]="'modalCarrinho' + i">
+                      <ng-template>
+                        <ion-header>
+                          <ion-toolbar>
+                            <ion-title class="extrasTitulo">Extras</ion-title>
+                            <ion-buttons slot="end">
+                              <ion-button (click)="modal.dismiss()">Close</ion-button>
+                            </ion-buttons>
+                          </ion-toolbar>
+                        </ion-header>
+                        <ion-content class="ion-padding">
+                          <div class="semExtras" *ngIf="!carrinho.imagemCarregada">
+                            <ion-text>Sem Extras</ion-text>
+                          </div>
+                          <div class="comExtras" *ngIf="carrinho.imagemCarregada">
+                            <ion-text>Imagem: </ion-text><img class="imagemCarregada" src="{{carrinho.imagemCarregada}}" alt="">
+                            <ion-text>Posição: {{carrinho.posicao}}</ion-text>
+                          </div>
+                        </ion-content>
+                      </ng-template>
+                    </ion-modal>
                   </ion-text>
                 </ion-item>
               </ion-list>
@@ -36,26 +62,28 @@
           </ion-card>
       </ion-col>
     </ion-row>
-    <ion-row class="informacoesCompra">
-      <ion-col>
-        <ion-text>Resumo da compra:</ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-text>Quantidade de produtos: {{carrinhos.length}}</ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-text>Preço da personalização: {{extras}}</ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-text>Total: {{total}} €</ion-text>
-      </ion-col>
-    </ion-row>
+    <div *ngIf="carrinhos.length !== 0">
+      <ion-row class="informacoesCompra">
+        <ion-col>
+          <ion-text>Resumo da compra:</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>Quantidade de produtos: {{carrinhos.length}}</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>Preço da personalização: {{extras}} €</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text>Total: {{total}} €</ion-text>
+        </ion-col>
+      </ion-row>
+    </div>
     <ion-row class="finalizarCompra">
       <ion-col>
         <ion-button color="blue-primary" (click)="finalizarCompra()"> <ion-icon name="cart-outline"></ion-icon>Finalizar Compra</ion-button>

@@ -21,7 +21,7 @@
       <ion-col>
         <ion-card>
           <ion-card-content>
-            <ion-list *ngFor="let carrinho of carrinho">
+            <ion-list *ngFor="let carrinho of carrinho; let i = index">
               <ion-item>
                 <ion-thumbnail slot="start" (click)="irDetalhes(carrinho.id)">
                   <img alt="{{carrinho.nome}}" src="{{carrinho.imagem}}" />
@@ -39,10 +39,34 @@
                 </ion-button>
               </ion-item>
               <ion-item>
-                <ion-text>
-                  Extras: <img src="{{carrinho.imagemCarregada}}" />
-                  <ion-text> Posição: {{carrinho.posicao}}</ion-text>
-                </ion-text>
+                <ion-item>
+                  <ion-text>
+                    <ion-button color="blue-primary" [id]="'modalCompra' + i" expand="block" fill="clear" shape="round">
+                      Ver extras
+                    </ion-button>
+                    <ion-modal #modal [trigger]="'modalCompra' + i">
+                      <ng-template>
+                        <ion-header>
+                          <ion-toolbar>
+                            <ion-title>Extras</ion-title>
+                            <ion-buttons slot="end">
+                              <ion-button (click)="modal.dismiss()">Close</ion-button>
+                            </ion-buttons>
+                          </ion-toolbar>
+                        </ion-header>
+                        <ion-content class="ion-padding">
+                          <div class="semExtras" *ngIf="!carrinho.imagemCarregada">
+                            <ion-text>Sem Extras</ion-text>
+                          </div>
+                          <div class="comExtras" *ngIf="carrinho.imagemCarregada">
+                            <ion-text>Imagem: </ion-text><img class="imagemCarregada" src="{{carrinho.imagemCarregada}}" alt="">
+                            <ion-text>Posição: {{carrinho.posicao}}</ion-text>
+                          </div>
+                        </ion-content>
+                      </ng-template>
+                    </ion-modal>
+                  </ion-text>
+                </ion-item>
               </ion-item>
             </ion-list>
           </ion-card-content>
@@ -129,7 +153,6 @@
           placeholder="Introduza o seu numero de telefone"
         ></ion-input>
         <ion-text color="danger" *ngIf="mbwayErro">{{ mbwayErro }}</ion-text>
-        <ion-text color="danger" *ngIf="mbwayErro">{{ mbwayErro }}</ion-text>
       </ion-col>
     </ion-row>
     <ion-row class="informacoesCompra">
@@ -144,7 +167,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-text>Preço da personalização: {{extras}}</ion-text>
+        <ion-text>Preço da personalização: {{extras}} €</ion-text>
       </ion-col>
     </ion-row>
     <ion-row>

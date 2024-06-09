@@ -9,6 +9,7 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 export class CarrinhoService {
   private total: number = 0
   private carrinho: produtos[]
+  private extras: number = 0
   constructor(private storage: Storage) { 
     this.carrinho = []
     this.init()
@@ -44,6 +45,16 @@ export class CarrinhoService {
 
   getQuantidadeCarrinho() {
     return this.carrinho.length
+  }
+
+  async getExtras(){
+    this.extras = 0
+    for(let i = 0; i < this.carrinho.length; i++){
+      if(this.carrinho[i].imagemCarregada){
+        this.extras += 3.5
+      }
+    }
+    return this.extras
   }
 
   async getTotal(){

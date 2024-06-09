@@ -21,7 +21,7 @@ export class CompraPage implements OnInit {
   multibancoInputVisible: boolean = false;
   mbwayInputVisible: boolean = false;
   mbwayValue: string = '';
-  extras: number = 3.5;
+  extras: number = 0;
   total: number = 0;
   moradaErro: string = '';
   envioErro: string = '';
@@ -43,6 +43,7 @@ export class CompraPage implements OnInit {
   async ionViewDidEnter() {
     await this.carrinhoS.getCarrinho().then((car) => {
       this.carrinho = car;
+      this.getExtras();
       this.getTotal();
     });
   }
@@ -67,6 +68,11 @@ export class CompraPage implements OnInit {
           text: 'Eliminar',
           handler: () => {
             this.carrinhoS.eliminarCarrinho(id);
+            if(this.carrinho.length === 0){
+              this.router.navigateByUrl('/tabs/loja');
+            }
+            this.getExtras()
+            this.getTotal()
           },
         },
       ],
@@ -109,6 +115,7 @@ export class CompraPage implements OnInit {
               this.supabase.mostrarMensagem('Compra realizada com sucesso!')
               this.router.navigateByUrl('/tabs/loja');
             } else {
+              this.supabase.mostrarErro('Por favor, preencha todos os campos obrigatórios!', 'Verifique todos os campos');
               console.log('Preencha todos os campos obrigatórios!');
               this.mostrarErros();
             }
@@ -154,6 +161,12 @@ export class CompraPage implements OnInit {
   getTotal() {
     this.carrinhoS.getTotal().then((total) => {
       this.total = total + this.extras;
+    });
+  }
+
+  getExtras(){
+    this.carrinhoS.getExtras().then(extras => {
+      this.extras = extras;
     });
   }
 }

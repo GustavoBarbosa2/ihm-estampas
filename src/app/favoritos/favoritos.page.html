@@ -9,7 +9,8 @@
               <ion-card-title>Os seus favoritos</ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <ion-list *ngFor="let favorito of favoritos">
+              <ion-text *ngIf="favoritos.length === 0">Nenhum produto foi adicionado aos favoritos! Adicione já!</ion-text>
+              <ion-list *ngFor="let favorito of favoritos; let i = index">
                 <ion-item>
                   <ion-thumbnail slot="start" (click)="irDetalhes(favorito.id)">
                     <img alt={{favorito.nome}} src="{{favorito.imagem}}" />
@@ -22,7 +23,30 @@
                 </ion-item>
                 <ion-item>
                   <ion-text>
-                    Extras: <img src="{{favorito.imagemCarregada}}"/> <ion-text>   Posição: {{favorito.posicao}}</ion-text>
+                    <ion-button color="blue-primary" [id]="'modalFav' + i" expand="block" fill="clear" shape="round">
+                      Ver extras
+                    </ion-button>
+                    <ion-modal #modal [trigger]="'modalFav' + i">
+                      <ng-template>
+                        <ion-header>
+                          <ion-toolbar>
+                            <ion-title>Extras</ion-title>
+                            <ion-buttons slot="end">
+                              <ion-button (click)="modal.dismiss()">Close</ion-button>
+                            </ion-buttons>
+                          </ion-toolbar>
+                        </ion-header>
+                        <ion-content class="ion-padding">
+                          <div class="semExtras" *ngIf="!favorito.imagemCarregada">
+                            <ion-text>Sem Extras</ion-text>
+                          </div>
+                          <div class="comExtras" *ngIf="favorito.imagemCarregada">
+                            <ion-text>Imagem: </ion-text><img class="imagemCarregada" src="{{favorito.imagemCarregada}}" alt="">
+                            <ion-text>Posição: {{favorito.posicao}}</ion-text>
+                          </div>
+                        </ion-content>
+                      </ng-template>
+                    </ion-modal>
                   </ion-text>
                 </ion-item>
               </ion-list>

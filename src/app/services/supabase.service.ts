@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { utilizador as Utilizador } from './utilizador';
 import { produtos as Produtos } from './produtos';
@@ -18,7 +18,8 @@ export class SupabaseService {
   constructor(
     private route: Router,
     private alerta_: AlertController, 
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController
   ) { 
     this.supabaseClient = createClient(this.supabaseUrl, this.supabaseKey);
   }
@@ -159,6 +160,13 @@ export class SupabaseService {
       throw error
     }
     return data
+  }
+
+  async loadingMensagem(mensagem: any){
+    const loading = await this.loadingCtrl.create({
+      message: mensagem
+    })
+    loading.present()
   }
 }
 

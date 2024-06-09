@@ -18,36 +18,43 @@
   </ion-header>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-item>
-        <ion-label>Tamanho</ion-label>
-        <ion-select [(ngModel)]="tamanhoSelecionado" (ionChange)="pesquisarProduto()">
-          <ion-select-option value="XL">XL</ion-select-option>
-          <ion-select-option value="L">L</ion-select-option>
-          <ion-select-option value="M">M</ion-select-option>
-          <ion-select-option value="S">S</ion-select-option>
-        </ion-select>
-      </ion-item>
-      </ion-col>
-      <ion-col>
-        <ion-item>
-          <ion-label>Cor</ion-label>
-          <ion-select [(ngModel)]="corSelecionada" (ionChange)="pesquisarProduto()">
-            <ion-select-option value="Preto">Preto</ion-select-option>
-            <ion-select-option value="Branco">Branco</ion-select-option>
-            <ion-select-option value="Azul">Azul</ion-select-option>
-            <ion-select-option value="Amarelo">Amarelo</ion-select-option>
-            <ion-select-option value="Vermelho">Vermelho</ion-select-option>
-          </ion-select>
-        </ion-item>
+      <ion-col class="filtrosSelecionados">
+        <ion-text *ngIf="tamanhoSelecionado !== ''"> Tamanho:  {{tamanhoSelecionado}}</ion-text>
+        <ion-text *ngIf="corSelecionada !== ''"> Cor:  {{corSelecionada}}</ion-text>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button color="blue-primary">
+        <ion-button id="popover" color="blue-primary">
           <ion-icon slot="start" name="funnel-outline"></ion-icon>
           Filtros
         </ion-button>
+        <ion-popover #filterPopover trigger="popover" side="bottom" alignment="center">
+          <ng-template>
+            <ion-item>
+              <ion-label>Tamanho</ion-label>
+              <ion-select [(ngModel)]="tamanhoSelecionado" (ionChange)="pesquisarProduto()">
+                <ion-select-option value="XL">XL</ion-select-option>
+                <ion-select-option value="L">L</ion-select-option>
+                <ion-select-option value="M">M</ion-select-option>
+                <ion-select-option value="S">S</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Cor</ion-label>
+              <ion-select [(ngModel)]="corSelecionada" (ionChange)="pesquisarProduto()">
+                <ion-select-option value="Preto">Preto</ion-select-option>
+                <ion-select-option value="Branco">Branco</ion-select-option>
+                <ion-select-option value="Azul">Azul</ion-select-option>
+                <ion-select-option value="Amarelo">Amarelo</ion-select-option>
+                <ion-select-option value="Vermelho">Vermelho</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button expand="block" fill="clear" shape="round" (click)="fecharPop()">
+              OK
+            </ion-button>
+          </ng-template>
+        </ion-popover>
         <ion-button color="danger" (click)="limparFiltros()">
           <ion-icon slot="start" name="close-circle-outline"></ion-icon>
           Limpar filtros
@@ -56,6 +63,11 @@
     </ion-row>
   </ion-grid>
   <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-text *ngIf="produtos.length === 0">Sem produtos disponiveis! Tente outros produtos</ion-text>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col class="card-small">
         <ion-card *ngFor="let produto of produtos"  (click)="irDetalhes(produto.id)">
@@ -68,7 +80,7 @@
              Preço: {{produto.preco}} €
             </ion-card-subtitle>
             <ion-card-content>
-              Tamanho: {{produto.tamanho}}    Cor: {{produto.cor}}
+              Tamanho: {{produto.tamanho}}  Cor: {{produto.cor}}
             </ion-card-content>
           </ion-card-header>
         </ion-card>

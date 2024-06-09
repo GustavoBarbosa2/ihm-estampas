@@ -14,9 +14,10 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 })
 export class ProdutoPage implements OnInit {
   produto!: Produtos  
-  imagem?: string
+  imagem?: string = ''
   posicao: string = ''
   imagemClass?: string
+  isFavorito: boolean = false
 
   constructor(
     private route: ActivatedRoute,
@@ -57,6 +58,20 @@ export class ProdutoPage implements OnInit {
     await alert.present();
   }
 
+  toggleFavorito() {
+    if (this.isFavorito) {
+      this.favoritos.eliminarFavorito(this.produto.id);
+      this.isFavorito = false;
+      this.produto.isFavorito = this.isFavorito
+      this.supabase.mostrarMensagem('Produto removido dos favoritos!');
+    } else {
+      this.favoritos.inserirFavorito(this.produto);
+      this.isFavorito = true;
+      this.produto.isFavorito = this.isFavorito
+      this.supabase.mostrarMensagem('Produto adicionado aos favoritos!');
+    }
+  }
+
   async adicionarCarrinho(){
     const alert = await this.alertController.create({
       header: 'Deseja adicionar o produto ao carrinho',
@@ -92,14 +107,18 @@ export class ProdutoPage implements OnInit {
   }
 
   async confirmar(){
-    const data = await this.popController.dismiss({
-      imagem: this.imagem,
-      posicao: this.posicao
-    });
-    if(data){
-      this.produto.imagemCarregada = this.imagem
-      this.produto.posicao = this.posicao
-      this.produto.imagemClass = this.imagemClass
+    if(this.posicao === ''){
+      this.supabase.mostrarErro('Erro ao personalizar o artigo', 'Porfavor selecione uma posição')
+    }else{
+      const data = await this.popController.dismiss({
+        imagem: this.imagem,
+        posicao: this.posicao
+      });
+      if(data){
+        this.produto.imagemCarregada = this.imagem
+        this.produto.posicao = this.posicao
+        this.produto.imagemClass = this.imagemClass
+      }
     }
   }
   alterarClasseImagem() {
