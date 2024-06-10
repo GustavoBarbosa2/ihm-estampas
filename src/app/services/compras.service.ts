@@ -28,6 +28,7 @@ export class ComprasService {
 
   async inserirCompras(compra: Compras) {
     if (!this.compras.includes(compra)) {
+      compra.id = Date.now();
       this.compras.push(compra);
       await this.storage.set('compras', this.compras);
     }
@@ -35,6 +36,14 @@ export class ComprasService {
 
   getQuantidadeCompras() {
     return this.compras.length;
+  }
+
+  async eliminarCompra(id?: number){
+    const index = this.compras.findIndex(compra => compra.id === id)
+    if(index >= 0){
+      this.compras.splice(index, 1)
+      await this.storage.set('compras', this.compras)
+    }
   }
 
   async limparCompras(){

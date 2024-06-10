@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CarrinhoService } from '../services/carrinho.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { CarrinhoPage } from '../carrinho/carrinho.page';
 import { SupabaseService } from '../services/supabase.service';
 import { ComprasService } from '../services/compras.service';
-import { identifierName } from '@angular/compiler';
+import { envio } from '../services/metodosEnvio';
 
 @Component({
   selector: 'app-compra',
@@ -17,7 +16,9 @@ export class CompraPage implements OnInit {
   compras: any;
   morada: any;
   envio: any;
+  metodoEnvio: any[] = envio
   pagamento: any;
+  feedback?: any
   multibancoInputVisible: boolean = false;
   mbwayInputVisible: boolean = false;
   mbwayValue: string = '';
@@ -66,11 +67,12 @@ export class CompraPage implements OnInit {
         },
         {
           text: 'Eliminar',
-          handler: () => {
+          handler: async  () => {
             this.carrinhoS.eliminarCarrinho(id);
             if(this.carrinho.length === 0){
               this.router.navigateByUrl('/tabs/loja');
             }
+            this.carrinho = await this.carrinhoS.getCarrinho();
             this.getExtras()
             this.getTotal()
           },
@@ -107,7 +109,8 @@ export class CompraPage implements OnInit {
                 pagamento: this.pagamento,
                 produto: this.carrinho,
                 numeroMBWAY: this.mbwayValue,
-                preco: this.total
+                preco: this.total,
+                feedback: this.feedback
               };
               console.log('compra: ', this.compras);
               this.comprasS.inserirCompras(this.compras);

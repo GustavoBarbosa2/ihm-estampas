@@ -25,6 +25,29 @@ export class HistoricoPage implements OnInit {
     });
   }
 
+  async eliminarHistorico(id?: number){
+    const alerta = this.alertController.create({
+      header: 'Confirmar exclusão',
+      message: 'Tem certeza que deseja excluir esta compra do histórico?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancelar');
+          },
+        },
+        {
+          text: 'Excluir',
+          handler: () => {
+            this.comprasS.eliminarCompra(id)
+          },
+        },
+      ],
+    });
+    (await alerta).present();
+  }
+
   async limpar(){
     const alerta = this.alertController.create({
       header: 'Confirmar limpeza',

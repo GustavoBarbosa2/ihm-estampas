@@ -42,8 +42,10 @@ export class FavoritosPage implements OnInit {
         },
         {
           text: 'Eliminar',
-          handler: () => {
+          handler: async () => {
+            console.log('id: ', id)
             this.favoritosS.eliminarFavorito(id);
+            this.favoritos = await this.favoritosS.getFavoritos()
           }
         }
       ]

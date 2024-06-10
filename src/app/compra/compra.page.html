@@ -13,7 +13,7 @@
       <ion-buttons slot="start">
         <ion-back-button></ion-back-button>
       </ion-buttons>
-      <ion-title size="large" >Finalizar Compra</ion-title>
+      <ion-title size="large">Finalizar Compra</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-grid>
@@ -41,7 +41,13 @@
               <ion-item>
                 <ion-item>
                   <ion-text>
-                    <ion-button color="blue-primary" [id]="'modalCompra' + i" expand="block" fill="clear" shape="round">
+                    <ion-button
+                      color="blue-primary"
+                      [id]="'modalCompra' + i"
+                      expand="block"
+                      fill="clear"
+                      shape="round"
+                    >
                       Ver extras
                     </ion-button>
                     <ion-modal #modal [trigger]="'modalCompra' + i">
@@ -50,16 +56,29 @@
                           <ion-toolbar>
                             <ion-title>Extras</ion-title>
                             <ion-buttons slot="end">
-                              <ion-button (click)="modal.dismiss()">Close</ion-button>
+                              <ion-button (click)="modal.dismiss()"
+                                >Close</ion-button
+                              >
                             </ion-buttons>
                           </ion-toolbar>
                         </ion-header>
                         <ion-content class="ion-padding">
-                          <div class="semExtras" *ngIf="!carrinho.imagemCarregada">
+                          <div
+                            class="semExtras"
+                            *ngIf="!carrinho.imagemCarregada"
+                          >
                             <ion-text>Sem Extras</ion-text>
                           </div>
-                          <div class="comExtras" *ngIf="carrinho.imagemCarregada">
-                            <ion-text>Imagem: </ion-text><img class="imagemCarregada" src="{{carrinho.imagemCarregada}}" alt="">
+                          <div
+                            class="comExtras"
+                            *ngIf="carrinho.imagemCarregada"
+                          >
+                            <ion-text>Imagem: </ion-text
+                            ><img
+                              class="imagemCarregada"
+                              src="{{carrinho.imagemCarregada}}"
+                              alt=""
+                            />
                             <ion-text>Posição: {{carrinho.posicao}}</ion-text>
                           </div>
                         </ion-content>
@@ -96,21 +115,9 @@
       <ion-list-header>
         <ion-label>Metodo de envio:</ion-label>
       </ion-list-header>
-      <ion-radio value="correio"
-        ><img src="assets/imagens/correio.png" alt="" /> Correio</ion-radio
-      >
-      <ion-radio value="mrw"
-        ><img src="assets/imagens/MRW.png" alt="" /> MRW</ion-radio
-      >
-      <ion-radio value="Nacex"
-        ><img src="assets/imagens/nacex.png" alt="" /> Nacex</ion-radio
-      >
-      <ion-radio value="dhl"
-        ><img src="assets/imagens/dhl.jpg" alt="" /> DHL</ion-radio
-      >
-      <ion-radio value="dpd"
-        ><img src="assets/imagens/dpd.png" alt="" /> DPD</ion-radio
-      >
+      <ion-item *ngFor="let envios of metodoEnvio">
+        <ion-radio value="{{envios.nome}}"><img src="{{envios.imagem}}" alt="" /> {{envios.nome}}</ion-radio>
+      </ion-item>
     </ion-radio-group>
     <ion-row>
       <ion-col>
@@ -153,6 +160,22 @@
           placeholder="Introduza o seu numero de telefone"
         ></ion-input>
         <ion-text color="danger" *ngIf="mbwayErro">{{ mbwayErro }}</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="feedback">
+          <ion-text>Diga o seu feedback</ion-text>
+        </div>
+        <ion-input
+          [(ngModel)]="feedback"
+          color="blue-primary"
+          type="text"
+          label="O que achou da aplicação?"
+          labelPlacement="floating"
+          fill="outline"
+          placeholder="O que achou da aplicação?"
+        ></ion-input>
       </ion-col>
     </ion-row>
     <ion-row class="informacoesCompra">

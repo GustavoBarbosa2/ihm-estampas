@@ -6,6 +6,7 @@ export interface compras{
   envio: string
   morada: string
   pagamento: string
+  feedback?: string
   produto: produtos[]
   numeroMBWAY?: number
   created_at?:Date

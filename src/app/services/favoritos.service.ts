@@ -28,6 +28,7 @@ export class FavoritosService {
 
   async inserirFavorito(favorito: Produtos){
     if (!this.favoritos.includes(favorito)) {
+      favorito.id = Date.now()
       this.favoritos.push(favorito);
       await this.storage.set('favoritos', this.favoritos);
     }

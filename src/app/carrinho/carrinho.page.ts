@@ -53,8 +53,9 @@ export class CarrinhoPage implements OnInit, ViewDidEnter {
         },
         {
           text: 'Eliminar',
-          handler: () => {
+          handler: async () => {
             this.carrinhoS.eliminarCarrinho(id);
+            this.carrinhos = await this.carrinhoS.getCarrinho()
             this.router.navigateByUrl('/carrinho')
             this.getExtras()
             this.getTotal()

@@ -34,9 +34,15 @@
       <p>Referencia: 894 536 763</p>
       <p>Valor: {{compra.preco}}€</p>
     </div>
+    <div *ngIf="compra.feedback">
+      <p>Feedback: {{compra.feedback}}</p>
+    </div>
+    <ion-button color="danger" (click)="eliminarHistorico(compra.id)">
+      <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+    </ion-button>
   </ion-card-content>
 </ion-card>
-<ion-button color="danger" (click)="limpar()">
+<ion-button class="ion-padding" color="danger" (click)="limpar()">
   <ion-icon slot="start" name="trash-outline"></ion-icon>
   LIMPAR HISTÓRICO
 </ion-button>

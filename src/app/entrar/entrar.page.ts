@@ -31,6 +31,7 @@ export class EntrarPage implements OnInit, ViewWillEnter {
   ionViewWillEnter(): void {
     const options: OrientationLockOptions = { orientation: 'portrait' };
     ScreenOrientation.lock(options);
+    this.credencias.reset()
 }
 
   async entrar(){

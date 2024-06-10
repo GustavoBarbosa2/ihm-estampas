@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ViewDidEnter } from '@ionic/angular';
 import { SupabaseService } from '../services/supabase.service';
 import { utilizador as Utilizador } from '../services/utilizador';
 
@@ -10,7 +10,7 @@ import { utilizador as Utilizador } from '../services/utilizador';
   templateUrl: './criar-conta.page.html',
   styleUrls: ['./criar-conta.page.scss'],
 })
-export class CriarContaPage implements OnInit {
+export class CriarContaPage implements OnInit, ViewDidEnter {
   credenciais!: FormGroup
   utilizador!: Utilizador
   constructor(
@@ -19,6 +19,10 @@ export class CriarContaPage implements OnInit {
     private fb: FormBuilder,
     private loadCtrl: LoadingController
   ) {}
+
+  ionViewDidEnter(): void {
+    this.credenciais.reset()
+  }
 
   ngOnInit() {
     this.credenciais = this.fb.group({
@@ -60,7 +64,7 @@ export class CriarContaPage implements OnInit {
       
     }catch (error: any){
       await loading.dismiss()
-      this.supabase.mostrarErro('Erro ao criar a conta', 'Verifique os todos os campos')
+      this.supabase.mostrarErro('Erro ao criar a conta', 'A password deve conter 6 ou mais digitos')
     }
   }
 }

@@ -30,6 +30,7 @@ export class CarrinhoService {
 
   async inserirCarrinho(carinho: produtos){
     if (!this.carrinho.includes(carinho)) {
+      carinho.id = Date.now()
       this.carrinho.push(carinho);
       await this.storage.set('carrinho', this.carrinho);
     }
