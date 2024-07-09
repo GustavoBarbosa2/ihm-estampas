@@ -10,5 +10,6 @@ export interface produtos{
   isFavorito?: boolean
   cor: string
   tamanho: string
+  categoria: string
   created_at?:Date
 }

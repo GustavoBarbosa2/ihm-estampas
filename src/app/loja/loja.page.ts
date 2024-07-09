@@ -15,19 +15,31 @@ export class LojaPage implements OnInit, ViewDidEnter {
   
   tamanhoSelecionado: string = '';
   corSelecionada: string = '';
+  cores: any[] = [];
+  categoriaSelecionada: string = '';
+  categorias: any[] = [];
   produtos: Produtos[] = []
   produtosCopy: Produtos[] = []
   pesquisa: string = ''
 
   constructor(
     private supabase: SupabaseService,
-    private router: Router
+    private route: Router
   ) { }
 
   ngOnInit() {
-    this.carregarProdutos()
+    this.carregarProdutos();
+    this.carregarCores();
+    this.carregarCategorias();
   }
 
+  async carregarCores() {
+    this.cores = await this.supabase.getCores();
+  }
+
+  async carregarCategorias() {
+    this.categorias = await this.supabase.getCategorias();
+  }
   async ionViewDidEnter(){
     }
 
@@ -45,22 +57,28 @@ export class LojaPage implements OnInit, ViewDidEnter {
     this.produtos = this.produtosCopy.filter(produto => {
       return produto.nome.toLowerCase().includes(this.pesquisa.toLowerCase()) &&
              (this.tamanhoSelecionado ? produto.tamanho === this.tamanhoSelecionado : true) &&
-             (this.corSelecionada ? produto.cor === this.corSelecionada : true)
+             (this.corSelecionada ? produto.cor === this.corSelecionada : true) &&
+             (this.categoriaSelecionada ? produto.categoria === this.categoriaSelecionada : true)
     })
   }
 
   irDetalhes(id?: number){
-    this.router.navigate(['/produto', id])
+    this.route.navigate(['/produto', id])
   }
 
   limparFiltros() {
     this.pesquisa = '';
     this.tamanhoSelecionado = '';
     this.corSelecionada = '';
+    this.categoriaSelecionada = '';
     this.pesquisarProduto();
   }
 
   fecharPop(){
     this.filterPopover.dismiss()
+  }
+
+  async adicionarProdutos(){
+    this.route.navigateByUrl('/add-produto')
   }
 }

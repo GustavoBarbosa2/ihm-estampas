@@ -21,6 +21,7 @@
       <ion-col class="filtrosSelecionados">
         <ion-text *ngIf="tamanhoSelecionado !== ''"> Tamanho:  {{tamanhoSelecionado}}</ion-text>
         <ion-text *ngIf="corSelecionada !== ''"> Cor:  {{corSelecionada}}</ion-text>
+        <ion-text *ngIf="categoriaSelecionada !== ''"> Categoria:  {{categoriaSelecionada}}</ion-text>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -43,11 +44,13 @@
             <ion-item>
               <ion-label>Cor</ion-label>
               <ion-select [(ngModel)]="corSelecionada" (ionChange)="pesquisarProduto()">
-                <ion-select-option value="Preto">Preto</ion-select-option>
-                <ion-select-option value="Branco">Branco</ion-select-option>
-                <ion-select-option value="Azul">Azul</ion-select-option>
-                <ion-select-option value="Amarelo">Amarelo</ion-select-option>
-                <ion-select-option value="Vermelho">Vermelho</ion-select-option>
+                <ion-select-option *ngFor="let cor of cores" [value]="cor.nome">{{ cor.nome }}</ion-select-option>
+              </ion-select>
+            </ion-item>            
+            <ion-item>
+              <ion-label>Categoria</ion-label>
+              <ion-select [(ngModel)]="categoriaSelecionada" (ionChange)="pesquisarProduto()">
+                <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.nome">{{ categoria.nome }}</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-button expand="block" fill="clear" shape="round" (click)="fecharPop()">
@@ -82,9 +85,15 @@
             <ion-card-content>
               Tamanho: {{produto.tamanho}}  Cor: {{produto.cor}}
             </ion-card-content>
+            <ion-card-content>
+              Categoria: {{produto.categoria}}
+            </ion-card-content>
           </ion-card-header>
         </ion-card>
       </ion-col>
     </ion-row>
+    <ion-button color="blue-primary" (click)="adicionarProdutos()">
+      Adicionar Produto
+    </ion-button>
   </ion-grid>
 </ion-content>

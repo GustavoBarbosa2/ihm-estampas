@@ -40,7 +40,7 @@ export class SupabaseService {
         .single(),
       );
   }
-  
+
   async addImage(image: any){
     const file = await this.convertImageToBlob(image);
   const fileName = `perfil-picture-${new Date().getTime()}.jpg`;
@@ -90,6 +90,45 @@ export class SupabaseService {
     }
     return data as {user: {id: string}}
   }
+
+  async getCores() {
+    const { data, error } = await this.supabaseClient
+      .from('cor')
+      .select('*');
+
+    if (error) {
+      console.error('Erro ao buscar cores:', error);
+      return [];
+    }
+
+    return data;
+  }
+
+  async getCategorias() {
+    const { data, error } = await this.supabaseClient
+      .from('categoria')
+      .select('*');
+
+    if (error) {
+      console.error('Erro ao buscar categoria:', error);
+      return [];
+    }
+
+    return data;
+  }
+
+  async adicionarCategoria(categoria: any) {
+    const { data, error } = await this.supabaseClient
+      .from('categoria') 
+      .insert([categoria.nome]);
+
+    if (error) {
+      console.error('Erro ao adicionar categoria:', error);
+    }
+
+    return { data, error };
+  }
+  
 
   async sair(){
     await this.supabaseClient.auth.signOut()
@@ -167,6 +206,33 @@ export class SupabaseService {
       message: mensagem
     })
     loading.present()
+  }
+
+  async adicionarProduto(produtos: Produtos) {
+    try {
+      const { data, error } = await this.supabaseClient
+        .from('produtos')
+        .insert([{
+          nome: produtos.nome,
+          imagem: produtos.imagemCarregada,
+          preco: produtos.preco,
+          quantidade: produtos.quantidade,
+          tamanho: produtos.tamanho,
+          cor: produtos.cor,
+          categoria: produtos.categoria,
+        }])
+        .single();
+
+      if (error) {
+        console.error('Erro ao adicionar produto:', error.message);
+        return null;
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Erro inesperado ao adicionar produto:', error);
+      return null;
+    }
   }
 }
 

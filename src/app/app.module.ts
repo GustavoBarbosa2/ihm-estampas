@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Drivers } from '@ionic/storage';
 import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+import { FormsModule } from '@angular/forms'; 
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +18,7 @@ import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
+    FormsModule,
     IonicStorageModule.forRoot({    
       driverOrder: [        
         CordovaSQLiteDriver._driver,        

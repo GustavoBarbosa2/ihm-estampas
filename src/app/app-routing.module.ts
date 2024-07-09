@@ -30,7 +30,11 @@ const routes: Routes = [
   {
     path: 'historico',
     loadChildren: () => import('./historico/historico.module').then( m => m.HistoricoPageModule)
+  },  {
+    path: 'add-produto',
+    loadChildren: () => import('./add-produto/add-produto.module').then( m => m.AddProdutoPageModule)
   }
+
 ];
 @NgModule({
   imports: [

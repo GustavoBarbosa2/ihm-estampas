@@ -18,8 +18,7 @@ export class EntrarPage implements OnInit, ViewWillEnter {
     private route: Router,
     private fb: FormBuilder,
     private loadCtrl: LoadingController
-  ) {
-   }
+  ) { }
 
   ngOnInit() {
     this.credencias = this.fb.group({
