@@ -92,13 +92,13 @@ export class AddProdutoPage implements OnInit {
           text: 'Adicionar',
           handler: async () => {
             const produto: Produto = {
-              nome: this.credenciais.get('nome')?.value,
-              imagemCarregada: this.imagem,
-              preco: this.credenciais.get('preco')?.value,
-              quantidade: this.credenciais.get('quantidade')?.value,
-              tamanho: this.credenciais.get('tamanho')?.value,
-              cor: this.credenciais.get('cor')?.value,
-              categoria: this.credenciais.get('categoria')?.value,
+              nome: this.nome,
+              imagemCarregada: this.imagem ?? "",
+              preco: this.preco,
+              quantidade: this.quantidade,
+              tamanho: this.tamanho,
+              cor: this.cor,
+              categoria: this.categoria,
               imagem: ''
             };
             const data = await this.supabase.adicionarProduto(produto);
