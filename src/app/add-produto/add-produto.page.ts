@@ -162,7 +162,7 @@ export class AddProdutoPage implements OnInit {
 
     this.mostrarFormularioNovaCategoria = false;
     this.novaCat = '';
-    await this.carregarCategorias(); // Refresh categories list
+    await this.carregarCategorias(); 
   }
 
   cancelarAcrescentarCategoria() {

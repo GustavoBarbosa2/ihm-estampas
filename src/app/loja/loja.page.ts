@@ -40,6 +40,7 @@ export class LojaPage implements OnInit, ViewDidEnter {
   async carregarCategorias() {
     this.categorias = await this.supabase.getCategorias();
   }
+  
   async ionViewDidEnter(){
     }
 

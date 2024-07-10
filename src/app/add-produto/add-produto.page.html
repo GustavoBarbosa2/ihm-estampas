@@ -1,101 +1,29 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="blue-primary">
-    <ion-title>Adicionar Produto</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Exemplo</title>
+</head>
+<body>
+  <form action="/submit-form" method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required>
+    <br><br>
 
-<ion-content [fullscreen]="true">
-  <ion-card>
-    <div class="container">
-      <h1>Adição de um Produto</h1>
-      <form [formGroup]="credenciais" (ngSubmit)="adicionarProdutoLista()"> 
-        <ion-item>
-          <ion-label>
-            <label for="nome">Nome do Produto:</label>
-            <input type="text" id="nome" formControlName="nome" required>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label for="preco">Preço:</ion-label>
-          <input type="number" id="preco" formControlName="preco" step="0.01" min="0" required pattern="[0-9]+([,\.][0-9]+)?" 
-                 (keypress)="validarNumero($event)">
-        </ion-item>    
-        <ion-item>
-          <label for="quantidade">Quantidade:</label>
-          <input type="number" id="quantidade" formControlName="quantidade" required pattern="[0-9]+([,\.][0-9]+)?" 
-          (keypress)="validarNumero($event)">
-        </ion-item>
-        <ion-item>
-          <label for="tamanho">Tamanho:</label>
-          <select id="tamanho" formControlName="tamanho">
-            <option value="Não Selecionado">Não Selecionado</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-          </select>
-        </ion-item>
-        <ion-item>
-          <label for="cor">Cor: </label>
-          <ion-select formControlName="cor">
-            <ion-select-option *ngFor="let cor of cores" [value]="cor.nome">{{ cor.nome }}</ion-select-option>
-          </ion-select>          
-        </ion-item>
-        <ion-item>
-          <label for="cor">Categoria: </label>
-          <ion-select formControlName="categoria">
-            <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.nome">{{ categoria.nome }}</ion-select-option>
-          </ion-select>
-          <ion-row>
-            <ion-button color="blue-primary" (click)="toggleNovaCategoriaForm()">Nova categoria</ion-button>
-          </ion-row>
-          <form *ngIf="mostrarFormularioNovaCategoria">
-            <ion-row>
-              <ion-label position="stacked">Nome da Categoria:</ion-label>
-              <input [(ngModel)]="novaCat" (ngModelChange)="definirCategoria($event)" placeholder="Digite o nome da nova categoria"/>
-              <ion-button expand="block" (click)="acrescentarCategoria()">Adicionar</ion-button>
-              <ion-button expand="block" color="light" (click)="cancelarAcrescentarCategoria()">Cancelar</ion-button>
-            </ion-row>
-          </form>
-        </ion-item>
-        <ion-item>
-          <label for="imagem">Imagem:</label>
-          <ion-row>
-            <ion-col>
-              <ion-button color="blue-primary" id="popOverProduto" class="buttonImage">
-                <ion-icon slot="icon-only" name="image-outline"></ion-icon>
-              </ion-button>
-              <ion-popover trigger="popOverProduto" triggerAction="click" side="bottom" alignment="center">
-                <ng-template>
-                  <ion-content class="ion-padding" scroll-y="true">
-                    <ion-grid class="ion-text-center">
-                      <ion-row>
-                        <ion-col>
-                          <ion-button color="blue-primary" (click)="escolherImagem()">Escolher Imagem</ion-button>
-                          <img *ngIf="imagem" src="{{ imagem }}" alt="Imagem Carregada" class="imagemCarregada"/>
-                        </ion-col>
-                      </ion-row>
-                      <ion-row>
-                        <ion-col>
-                          <ion-button color="success" (click)="confirmar()">Confirmar</ion-button>
-                        </ion-col>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-content>
-                </ng-template>
-              </ion-popover>
-            </ion-col>
-          </ion-row>          
-        </ion-item>
-        <ion-row>
-          <ion-col>
-            <ion-button color="danger" (click)="cancelar()">Cancelar</ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button class="direita" color="success" type="submit">Confirmar</ion-button>
-          </ion-col>
-        </ion-row>
-      </form>
-    </div>
-  </ion-card>
-</ion-content>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <br><br>
+
+    <label for="idade">Idade:</label>
+    <input type="number" id="idade" name="idade" required>
+    <br><br>
+
+    <label for="mensagem">Mensagem:</label>
+    <textarea id="mensagem" name="mensagem" rows="4" cols="50"></textarea>
+    <br><br>
+
+    <input type="submit" value="Enviar">
+</form>
+</body>
+</html>
