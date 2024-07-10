@@ -210,6 +210,7 @@ export class SupabaseService {
 
   async adicionarProduto(produtos: Produtos) {
     try {
+      console.log("SUPABASE");
       const { data, error } = await this.supabaseClient
         .from('produtos')
         .insert([{
@@ -223,7 +224,10 @@ export class SupabaseService {
         }])
         .single();
 
-      if (error) {
+        this.route.navigateByUrl('/tabs/loja');
+
+      
+        if (error) {
         console.error('Erro ao adicionar produto:', error.message);
         return null;
       }
@@ -234,5 +238,30 @@ export class SupabaseService {
       return null;
     }
   }
+
+  async uploadImage(image: any): Promise<string | null> {
+    const response = await fetch(image.webPath);
+    const blob = await response.blob();
+    const filePath = `${new Date().getTime()}.${blob.type.split('/')[1]}`;
+    
+    const { data, error } = await this.supabaseClient
+      .storage
+      .from('perfil-fotos')
+      .upload(filePath, blob);
+
+    if (error) {
+      console.error('Erro ao carregar imagem:', error.message);
+      return null;
+    }
+
+    const { publicUrl } = this.supabaseClient
+      .storage
+      .from('perfil-fotos')
+      .getPublicUrl(filePath)
+      .data;
+
+    return publicUrl;
+  }
+  
 }
 

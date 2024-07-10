@@ -72,11 +72,12 @@ export class CarrinhoPage implements OnInit, ViewDidEnter {
     });
   }
 
-  getTotal(){
+  getTotal() {
     this.carrinhoS.getTotal().then(total => {
-      this.total = total + this.extras;
+      this.total = parseFloat((total + this.extras).toFixed(2));
     });
   }
+  
 
   async finalizarCompra(){
     if(this.carrinhos.length === 0){

@@ -28,7 +28,6 @@ export class LojaPage implements OnInit, ViewDidEnter {
   ) { }
 
   ngOnInit() {
-    this.carregarProdutos();
     this.carregarCores();
     this.carregarCategorias();
   }
@@ -42,6 +41,7 @@ export class LojaPage implements OnInit, ViewDidEnter {
   }
   
   async ionViewDidEnter(){
+    this.carregarProdutos();
     }
 
   async carregarProdutos(){

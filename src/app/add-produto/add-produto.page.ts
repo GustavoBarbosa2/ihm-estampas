@@ -105,8 +105,6 @@ export class AddProdutoPage implements OnInit {
             if (data) {
               this.supabase.mostrarMensagem('Produto adicionado à lista!');
               this.route.navigateByUrl('/tabs/loja');
-            } else {
-              this.supabase.mostrarMensagem('Erro ao adicionar produto.');
             }
           }
         }
@@ -147,7 +145,18 @@ export class AddProdutoPage implements OnInit {
       source: CameraSource.Photos,
     });
 
-    this.imagem = image.webPath;
+    const uploadedImageUrl = await this.supabase.uploadImage(image);
+
+    if (uploadedImageUrl) {
+      this.imagem = uploadedImageUrl;
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Erro ao carregar imagem',
+        message: 'Ocorreu um erro ao carregar a imagem. Por favor, tente novamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
 
   }
 
