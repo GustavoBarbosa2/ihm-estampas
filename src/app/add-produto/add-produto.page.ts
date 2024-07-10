@@ -12,6 +12,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   styleUrls: ['./add-produto.page.scss'],
 })
 export class AddProdutoPage implements OnInit {
+  // Definição dos atributos da classe
   credenciais!: FormGroup;
   corSelecionada: string = '';
   cores: any[] = [];
@@ -21,7 +22,7 @@ export class AddProdutoPage implements OnInit {
   imagemClass: string | undefined;
   mostrarFormularioNovaCategoria = false;
   novaCat: string = '';
-  tamanho: string='';
+  tamanho: string = '';
   nome: any;
   preco: any;
   quantidade: any;
@@ -31,6 +32,7 @@ export class AddProdutoPage implements OnInit {
   precoInvalido: boolean = false;
   quantidadeInvalida: boolean = false;
 
+  // Construtor para injetar dependências e inicializar o formulário
   constructor(
     private supabase: SupabaseService,
     private route: Router,
@@ -39,6 +41,7 @@ export class AddProdutoPage implements OnInit {
     private popController: PopoverController,
     private loadingCtrl: LoadingController
   ) {
+    // Inicializa o formulário com validações
     this.credenciais = this.fb.group({
       nome: ['', Validators.required],
       preco: [null, [Validators.required, Validators.min(0)]],
@@ -49,11 +52,13 @@ export class AddProdutoPage implements OnInit {
     });
   }
 
+  // Método que é chamado ao inicializar o componente
   async ngOnInit() {
     await this.carregarCores();
     await this.carregarCategorias();
   }
 
+  // Método para adicionar um produto à lista
   async adicionarProdutoLista() {
     if (this.precoInvalido || this.quantidadeInvalida || !this.nome || !this.cor || !this.categoria || !this.imagem || !this.preco || !this.quantidade) {
       let errorMessage = 'Por favor, corrija os erros nos campos seguintes:';
@@ -75,8 +80,7 @@ export class AddProdutoPage implements OnInit {
       return;
     }
 
-    
-  
+    // Exibe uma confirmação antes de adicionar o produto
     const alert = await this.alertController.create({
       header: 'Deseja adicionar o produto',
       message: 'Tem certeza que deseja adicionar este produto à lista de produtos?',
@@ -113,7 +117,7 @@ export class AddProdutoPage implements OnInit {
     await alert.present();
   }
   
-
+  // Método para cancelar a adição do produto
   async cancelar() {
     const alert = await this.alertController.create({
       header: 'Deseja cancelar a adição do produto',
@@ -138,6 +142,7 @@ export class AddProdutoPage implements OnInit {
     await alert.present();
   }
 
+  // Método para escolher uma imagem 
   async escolherImagem() {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -157,10 +162,9 @@ export class AddProdutoPage implements OnInit {
       });
       await alert.present();
     }
-
   }
 
-
+  // Métodos para carregar as cores e categorias do serviço Supabase
   async carregarCores() {
     this.cores = await this.supabase.getCores();
   }
@@ -169,10 +173,12 @@ export class AddProdutoPage implements OnInit {
     this.categorias = await this.supabase.getCategorias();
   }
 
+  // Método para alternar a exibição do formulário de nova categoria
   toggleNovaCategoriaForm() {
     this.mostrarFormularioNovaCategoria = !this.mostrarFormularioNovaCategoria;
   }
 
+  // Método para adicionar uma nova categoria
   async adicionarCategoria(nomeCategoria: string) {
     const { data, error } = await this.supabase.adicionarCategoria({
       nome: nomeCategoria,
@@ -187,10 +193,12 @@ export class AddProdutoPage implements OnInit {
     }
   }
 
+  // Método para cancelar a criação de uma nova categoria
   cancelarCriacaoCategoria() {
     this.popController.dismiss();
   }
 
+  // Métodos para confirmar ou cancelar a imagem selecionada
   async confirmarImagem() {
     await this.popController.dismiss();
     this.imagemClass = this.imagem;
@@ -201,10 +209,12 @@ export class AddProdutoPage implements OnInit {
     this.imagem = '';
   }
 
+  // Método para remover a imagem selecionada
   removerImagem() {
     this.imagem = '';
   }
   
+  // Métodos para validar o preço e a quantidade
   validarPreco() {
     const regex = /^\d+(\.\d{1,2})?$/;
     this.precoInvalido = !regex.test(this.preco);
@@ -215,6 +225,7 @@ export class AddProdutoPage implements OnInit {
     this.quantidadeInvalida = !regex.test(this.quantidade);
   }
 
+  // Métodos para validar a entrada de números nos campos de preço e quantidade
   validarNumero(event: any) {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
@@ -239,8 +250,4 @@ export class AddProdutoPage implements OnInit {
       event.target.value = input.replace(/[^0-9]/g, '');
     }
   }
-
-  }
-  
-  
-
+}

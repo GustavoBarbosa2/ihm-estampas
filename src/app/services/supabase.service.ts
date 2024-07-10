@@ -11,10 +11,11 @@ import { Photo } from '@capacitor/camera';
 })
 
 export class SupabaseService {
-  private supabaseUrl = 'https://hnsffgsqdsirdurgerbv.supabase.co'
-  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhuc2ZmZ3NxZHNpcmR1cmdlcmJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTcxNTA4MzIsImV4cCI6MjAzMjcyNjgzMn0.jhpjDUhFuSFstxIi94LXGH71wxw8FDBuWiSOSsOaGWI'
+  // URL e chave do Supabase para conexão com o banco de dados
+  private supabaseUrl = 'https://hnsffgsqdsirdurgerbv.supabase.co';
+  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhuc2ZmZ3NxZHNpcmR1cmdlcmJ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTcxNTA4MzIsImV4cCI6MjAzMjcyNjgzMn0.jhpjDUhFuSFstxIi94LXGH71wxw8FDBuWiSOSsOaGWI';
   supabaseClient: SupabaseClient;
-  
+
   constructor(
     private route: Router,
     private alerta_: AlertController, 
@@ -24,73 +25,78 @@ export class SupabaseService {
     this.supabaseClient = createClient(this.supabaseUrl, this.supabaseKey);
   }
 
-  get user(){
-    return this.supabaseClient.auth.getUser().then(({data}) => data.user)
+  // Retorna o utilizador autenticado
+  get user() {
+    return this.supabaseClient.auth.getUser().then(({data}) => data.user);
   }
-  
 
+  // Retorna os detalhes do utilizador autenticado
   get utilizador() {
     return this.user
       .then((user) => user?.email)
       .then((email) =>
         this.supabaseClient
-        .from("utilizadores")
-        .select(`nome, email, uuid, created_at, updated_at, palavra_passe`)
-        .eq("email", email)
-        .single(),
+          .from("utilizadores")
+          .select(`nome, email, uuid, created_at, updated_at, palavra_passe`)
+          .eq("email", email)
+          .single(),
       );
   }
 
-  async addImage(image: any){
+  // Adiciona uma imagem ao armazenamento Supabase
+  async addImage(image: any) {
     const file = await this.convertImageToBlob(image);
-  const fileName = `perfil-picture-${new Date().getTime()}.jpg`;
-  const fileType = 'image/jpeg';
+    const fileName = `perfil-picture-${new Date().getTime()}.jpg`;
+    const fileType = 'image/jpeg';
 
-  // Upload para o Supabase
-  const { data, error } = await this.supabaseClient.storage
-    .from('perfil-fotos')
-    .upload(fileName, file, {
-      contentType: fileType,
-      upsert: true,
-    });
+    const { data, error } = await this.supabaseClient.storage
+      .from('perfil-fotos')
+      .upload(fileName, file, {
+        contentType: fileType,
+        upsert: true,
+      });
 
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(`Arquivo uploaded com sucesso!`);
-    this.supabaseClient.auth.updateUser({
-      data: {
-        picture: data.path,
-      },
-    });
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(`Arquivo uploaded com sucesso!`);
+      this.supabaseClient.auth.updateUser({
+        data: {
+          picture: data.path,
+        },
+      });
+    }
   }
-  }
 
+  // Converte uma imagem para blob
   async convertImageToBlob(image: any) {
     const response = await fetch(image.webPath);
     const blob = await response.blob();
     return blob;
   }
 
-  async entrar(credencias: {email: any, password: any}){
-    const {error, data} = await this.supabaseClient.auth.signInWithPassword({
+  // Realiza o login do utilizador
+  async entrar(credencias: { email: any, password: any }) {
+    const { error, data } = await this.supabaseClient.auth.signInWithPassword({
       email: credencias.email,
       password: credencias.password
-    })
-    if (error){
-      throw error
+    });
+    if (error) {
+      throw error;
     }
-    return data
+    return data;
   }
 
-  async registar(credencias: {email: any, password: any}): Promise< {user: {id: string}}>{
-    const {error, data} = await this.supabaseClient.auth.signUp(credencias)
-    if(error){
-      throw error
+  // Regista um novo utilizador
+  async registar(credencias: { email: any, password: any }): Promise<{ user: { id: string } }> {
+    const { error, data } = await this.supabaseClient.auth.signUp(credencias);
+    if (error) {
+      throw error;
     }
-    return data as {user: {id: string}}
+    return data as { user: { id: string } };
   }
 
+  // Obtém todas as cores a base de dados
   async getCores() {
     const { data, error } = await this.supabaseClient
       .from('cor')
@@ -104,6 +110,7 @@ export class SupabaseService {
     return data;
   }
 
+  // Obtém todas as categorias a base de dados
   async getCategorias() {
     const { data, error } = await this.supabaseClient
       .from('categoria')
@@ -117,9 +124,10 @@ export class SupabaseService {
     return data;
   }
 
+  // Adiciona uma nova categoria a base de dados
   async adicionarCategoria(categoria: { nome: string }) {
     const { data, error } = await this.supabaseClient
-      .from('categoria') 
+      .from('categoria')
       .insert([{ nome: categoria.nome }]);
 
     if (error) {
@@ -128,86 +136,94 @@ export class SupabaseService {
 
     return { data, error };
   }
-  
 
-  async sair(){
-    await this.supabaseClient.auth.signOut()
-    this.route.navigateByUrl('/')
+  // Realiza o logout do utilizador
+  async sair() {
+    await this.supabaseClient.auth.signOut();
+    this.route.navigateByUrl('/');
   }
 
-  async mostrarErro(titulo: any, mensagem: any){
-    const alerta =  await this.alerta_.create({
+  // Mostra uma mensagem de erro
+  async mostrarErro(titulo: any, mensagem: any) {
+    const alerta = await this.alerta_.create({
       header: titulo,
       message: mensagem,
       buttons: ['OK']
     });
-    await alerta.present()
+    await alerta.present();
   }
 
+  // Mostra uma mensagem toast
   async mostrarMensagem(mensagem: string) {
     const toast = await this.toastCtrl.create({
       message: mensagem,
       duration: 1500,
-      position: 'bottom' 
+      position: 'bottom'
     });
     toast.present();
   }
 
-  async inserirUtlizador(utilizador: Utilizador){
-    const {error, data} = await this.supabaseClient.from('utilizadores').insert({
+  // Insere um novo utilizador na base de dados
+  async inserirUtlizador(utilizador: Utilizador) {
+    const { error, data } = await this.supabaseClient.from('utilizadores').insert({
       nome: utilizador.nome,
       email: utilizador.email,
       palavra_passe: utilizador.password,
       uuid: utilizador.uuid
-    }).single()
+    }).single();
 
-    if(error){
-      return null
+    if (error) {
+      return null;
     }
-    return data
+    return data;
   }
 
-  async getProdutosFiltrados(filterString?: string): Promise<Produtos[]>{
-    let query = `SELECT * FROM produtos`
+  // Obtém produtos filtrados com base em uma string de filtro
+  async getProdutosFiltrados(filterString?: string): Promise<Produtos[]> {
+    let query = `SELECT * FROM produtos`;
 
-    if(filterString){
-      query += ` WHERE ${filterString}`
+    if (filterString) {
+      query += ` WHERE ${filterString}`;
     }
 
-    const {data, error} = await this.supabaseClient
-    .from('produtos')
-    .select(query)
+    const { data, error } = await this.supabaseClient
+      .from('produtos')
+      .select(query);
 
-    if(error){
-      throw error
+    if (error) {
+      throw error;
     }
-    return data as unknown as Produtos[]
+    return data as unknown as Produtos[];
   }
 
-  async getProdutos(){
-    const {data, error} = await this.supabaseClient.from('produtos').select('*')
-    if(error){
-      throw error
+  // Obtém todos os produtos
+  async getProdutos() {
+    const { data, error } = await this.supabaseClient.from('produtos').select('*');
+    if (error) {
+      throw error;
     }
-    return data
+    return data;
   }
 
-  async getProdutoById(id: number){
-    const {error, data} = await this.supabaseClient.from('produtos').select('*').eq('id', id).single()
+  // Obtém um produto pelo ID
+  async getProdutoById(id: number) {
+    const { error, data } = await this.supabaseClient.from('produtos').select('*').eq('id', id).single();
 
-    if(error){
-      throw error
+    if (error) {
+      throw error;
     }
-    return data
+    return data;
   }
 
-  async loadingMensagem(mensagem: any){
+  // Mostra uma mensagem de carregamento
+  async loadingMensagem(mensagem: any) {
     const loading = await this.loadingCtrl.create({
       message: mensagem
-    })
-    loading.present()
+    });
+    loading.present();
   }
 
+  // Adiciona um novo produto a base de dados
   async adicionarProduto(produtos: Produtos) {
     try {
       console.log("SUPABASE");
@@ -224,10 +240,9 @@ export class SupabaseService {
         }])
         .single();
 
-        this.route.navigateByUrl('/tabs/loja');
+      this.route.navigateByUrl('/tabs/loja');
 
-      
-        if (error) {
+      if (error) {
         console.error('Erro ao adicionar produto:', error.message);
         return null;
       }
@@ -239,6 +254,7 @@ export class SupabaseService {
     }
   }
 
+  // Faz o upload de uma imagem para o armazenamento Supabase
   async uploadImage(image: any): Promise<string | null> {
     const response = await fetch(image.webPath);
     const blob = await response.blob();
@@ -263,6 +279,7 @@ export class SupabaseService {
     return publicUrl;
   }
 
+  // Elimina um produto da base de dados
   async eliminarProduto(produtoId: string): Promise<void> {
     const { data, error } = await this.supabaseClient
       .from('produtos')
@@ -275,6 +292,4 @@ export class SupabaseService {
 
     this.route.navigateByUrl('/tabs/loja');
   }
-  
 }
-
