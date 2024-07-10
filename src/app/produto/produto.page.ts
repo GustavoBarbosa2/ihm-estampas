@@ -18,6 +18,7 @@ export class ProdutoPage implements OnInit {
   posicao: string = ''
   imagemClass?: string
   isFavorito: boolean = false
+  id: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -129,6 +130,37 @@ export class ProdutoPage implements OnInit {
     } else if (this.posicao === 'direita') {
       this.imagemClass = 'imagem-direita';
     }
+  }
+
+  async eliminarProduto(produtoId: any) {
+    console.log('ID do produto a ser eliminado:', produtoId);
+    if (!produtoId) {
+      console.error('ID do produto está undefined');
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmação',
+      message: 'Tem certeza que deseja eliminar este produto?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+        {
+          text: 'Eliminar',
+          handler: async () => {
+            try {
+              await this.supabase.eliminarProduto(produtoId);
+            } catch (error) {
+              console.error('Erro ao eliminar produto', error);
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
 }

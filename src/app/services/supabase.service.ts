@@ -262,6 +262,19 @@ export class SupabaseService {
 
     return publicUrl;
   }
+
+  async eliminarProduto(produtoId: string): Promise<void> {
+    const { data, error } = await this.supabaseClient
+      .from('produtos')
+      .delete()
+      .match({ id: produtoId });
+
+    if (error) {
+      throw error;
+    }
+
+    this.route.navigateByUrl('/tabs/loja');
+  }
   
 }
 

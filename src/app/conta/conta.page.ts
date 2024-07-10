@@ -27,16 +27,6 @@ export class ContaPage implements OnInit {
       console.error('Error fetching user:', error);
     });
   }
-  // TODO
-  // async selectImage(){
-  //   const image = await Camera.getPhoto({
-  //     quality: 90,
-  //     allowEditing: true,
-  //     source: CameraSource.Photos,
-  //     resultType: CameraResultType.Uri
-  //   })
-  //   this.supabase.addImage(image)
-  // }
 
   irHistorico(){
     this.route.navigateByUrl('/historico') 
