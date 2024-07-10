@@ -21,6 +21,15 @@ export class AddProdutoPage implements OnInit {
   imagemClass: string | undefined;
   mostrarFormularioNovaCategoria = false;
   novaCat: string = '';
+  tamanho: string='';
+  nome: any;
+  preco: any;
+  quantidade: any;
+  categoria: any;
+  cor: any;
+  popoverImagem: any;
+  precoInvalido: boolean = false;
+  quantidadeInvalida: boolean = false;
 
   constructor(
     private supabase: SupabaseService,
@@ -46,6 +55,28 @@ export class AddProdutoPage implements OnInit {
   }
 
   async adicionarProdutoLista() {
+    if (this.precoInvalido || this.quantidadeInvalida || !this.nome || !this.cor || !this.categoria || !this.imagem || !this.preco || !this.quantidade) {
+      let errorMessage = 'Por favor, corrija os erros nos campos seguintes:';
+      if (!this.nome) errorMessage += '\n- Nome';
+      if (!this.preco) errorMessage += '\n- Preco';
+      if (!this.quantidade) errorMessage += '\n- Quantidade';
+      if (this.precoInvalido) errorMessage += '\n- Preço (inválido)';
+      if (this.quantidadeInvalida) errorMessage += '\n- Quantidade (inválida)';
+      if (!this.cor) errorMessage += '\n- Cor';
+      if (!this.categoria) errorMessage += '\n- Categoria';
+      if (!this.imagem) errorMessage += '\n- Imagem';
+      
+      const alert = await this.alertController.create({
+        header: 'Erro de Validação',
+        message: errorMessage,
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
+
+    
+  
     const alert = await this.alertController.create({
       header: 'Deseja adicionar o produto',
       message: 'Tem certeza que deseja adicionar este produto à lista de produtos?',
@@ -70,15 +101,20 @@ export class AddProdutoPage implements OnInit {
               categoria: this.credenciais.get('categoria')?.value,
               imagem: ''
             };
-            await this.supabase.adicionarProduto(produto);
-            this.supabase.mostrarMensagem('Produto adicionado à lista!');
-            this.route.navigateByUrl('/tabs/loja');
+            const data = await this.supabase.adicionarProduto(produto);
+            if (data) {
+              this.supabase.mostrarMensagem('Produto adicionado à lista!');
+              this.route.navigateByUrl('/tabs/loja');
+            } else {
+              this.supabase.mostrarMensagem('Erro ao adicionar produto.');
+            }
           }
         }
       ]
     });
     await alert.present();
   }
+  
 
   async cancelar() {
     const alert = await this.alertController.create({
@@ -112,23 +148,9 @@ export class AddProdutoPage implements OnInit {
     });
 
     this.imagem = image.webPath;
+
   }
 
-  async confirmar() {
-    const data = await this.popController.dismiss({
-      imagem: this.imagem,
-    });
-    if (data) {
-      this.imagemClass = this.imagem;
-    }
-  }
-
-  validarNumero(event: KeyboardEvent) {
-    const charCode = event.charCode;
-    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-      event.preventDefault();
-    }
-  }
 
   async carregarCores() {
     this.cores = await this.supabase.getCores();
@@ -142,31 +164,74 @@ export class AddProdutoPage implements OnInit {
     this.mostrarFormularioNovaCategoria = !this.mostrarFormularioNovaCategoria;
   }
 
-  definirCategoria(event: any) {
-    this.novaCat = event.data;
-  }
-
-  async acrescentarCategoria() {
-    console.log('Nome da nova categoria:', this.novaCat);
-
-    if (this.novaCat.length === 0) {
-      console.error('Nome da categoria não pode ser vazio.');
-      return;
-    }
-    const { data, error } = await this.supabase.adicionarCategoria({ nome: this.novaCat });
+  async adicionarCategoria(nomeCategoria: string) {
+    const { data, error } = await this.supabase.adicionarCategoria({
+      nome: nomeCategoria,
+    });
 
     if (error) {
-      console.error('Erro ao adicionar categoria:', error);
-      return;
+      console.error('Erro ao adicionar categoria TS:', error);
+    } else {
+      this.categorias.push(data);
+      this.popController.dismiss();
+      this.carregarCategorias();
     }
-
-    this.mostrarFormularioNovaCategoria = false;
-    this.novaCat = '';
-    await this.carregarCategorias(); 
   }
 
-  cancelarAcrescentarCategoria() {
-    this.mostrarFormularioNovaCategoria = false;
-    this.novaCat = '';
+  cancelarCriacaoCategoria() {
+    this.popController.dismiss();
   }
-}
+
+  async confirmarImagem() {
+    await this.popController.dismiss();
+    this.imagemClass = this.imagem;
+  }
+
+  async cancelarImagem() {
+    await this.popController.dismiss();
+    this.imagem = '';
+  }
+
+  removerImagem() {
+    this.imagem = '';
+  }
+  
+  validarPreco() {
+    const regex = /^\d+(\.\d{1,2})?$/;
+    this.precoInvalido = !regex.test(this.preco);
+  }
+
+  validarQuantidade() {
+    const regex = /^\d+$/;
+    this.quantidadeInvalida = !regex.test(this.quantidade);
+  }
+
+  validarNumero(event: any) {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+      event.preventDefault();
+    }
+  }
+
+  validarPrecoInput(event: any) {
+    const pattern = /^[0-9]*\.?[0-9]*$/;
+    const input = event.target.value;
+
+    if (!pattern.test(input)) {
+      event.target.value = input.replace(/[^0-9.]/g, '');
+    }
+  }
+
+  validarQuantidadeInput(event: any) {
+    const pattern = /^[0-9]*$/;
+    const input = event.target.value;
+
+    if (!pattern.test(input)) {
+      event.target.value = input.replace(/[^0-9]/g, '');
+    }
+  }
+
+  }
+  
+  
+

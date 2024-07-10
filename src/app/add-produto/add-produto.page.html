@@ -1,29 +1,91 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Exemplo</title>
-</head>
-<body>
-  <form action="/submit-form" method="POST">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" required>
-    <br><br>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Adicionar Produto</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <br><br>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nome</ion-label>
+      <ion-input type="text" placeholder="Nome do Produto" [(ngModel)]="nome" required></ion-input>
+    </ion-item>
 
-    <label for="idade">Idade:</label>
-    <input type="number" id="idade" name="idade" required>
-    <br><br>
+    <ion-item>
+      <ion-label position="stacked">Preço</ion-label>
+      <ion-input type="text" placeholder="Preço" [(ngModel)]="preco" (keypress)="validarNumero($event)" (input)="validarPrecoInput($event)" (paste)="validarPrecoInput($event)" (ionBlur)="validarPreco()" required></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="precoInvalido">
+      Preço deve ter no máximo duas casas decimais.
+    </ion-text>
+    
+    <ion-item>
+      <ion-label position="stacked">Quantidade</ion-label>
+      <ion-input type="text" placeholder="Quantidade" [(ngModel)]="quantidade" (keypress)="validarNumero($event)" (input)="validarQuantidadeInput($event)" (paste)="validarQuantidadeInput($event)" (ionBlur)="validarQuantidade()" required></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="quantidadeInvalida">
+      Quantidade deve ser um número inteiro.
+    </ion-text>    
+    
+    <ion-item>
+      <ion-label position="stacked">Tamanho</ion-label>
+      <ion-select placeholder="Selecione o tamanho" [(ngModel)]="tamanho">
+        <ion-select-option value="sem tamanho">Selecione o tamanho</ion-select-option>
+        <ion-select-option value="s">S</ion-select-option>
+        <ion-select-option value="m">M</ion-select-option>
+        <ion-select-option value="l">L</ion-select-option>
+        <ion-select-option value="xl">XL</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <label for="mensagem">Mensagem:</label>
-    <textarea id="mensagem" name="mensagem" rows="4" cols="50"></textarea>
-    <br><br>
+    <ion-item>
+      <ion-label position="stacked">Cor</ion-label>
+      <ion-select placeholder="Selecione a cor" [(ngModel)]="cor">
+        <ion-select-option *ngFor="let cor of cores" [value]="cor.nome">{{ cor.nome }}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <input type="submit" value="Enviar">
-</form>
-</body>
-</html>
+    <ion-item>
+      <ion-label position="stacked">Categoria</ion-label>
+      <ion-select placeholder="Selecione a categoria" [(ngModel)]="categoria">
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.nome">{{ categoria.nome }}</ion-select-option>
+      </ion-select>
+      <ion-button slot="end" id="popOverProd">Nova Categoria</ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Imagem</ion-label>
+      <ion-button slot="end" (click)="escolherImagem()">
+        <ion-icon name="image-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="imagem">
+      <ion-label>Pré-visualização:</ion-label>
+      <ion-button fill="clear" size="big" color="danger" (click)="removerImagem()">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
+      <img [src]="imagem" alt="Pré-visualização da imagem" style="max-height: 150px; max-width: 60%;">
+    </ion-item>
+    
+
+  </ion-list>
+
+  <ion-button expand="full" color="danger" (click)="cancelar()">Cancelar</ion-button>
+  <ion-button expand="full" color="success" (click)="adicionarProdutoLista()">Confirmar</ion-button>
+</ion-content>
+
+<ion-popover trigger="popOverProd" triggerAction="click" side="bottom" alignment="right">
+<ng-template>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nome da Nova Categoria</ion-label>
+        <ion-input [(ngModel)]="novaCat" type="text" placeholder="Nome da Categoria" required></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="full" color="success" (click)="adicionarCategoria(novaCat)">Confirmar</ion-button>
+    <ion-button expand="full" color="danger" (click)="cancelarCriacaoCategoria()">Cancelar</ion-button>
+  </ion-content>
+</ng-template>
+</ion-popover>

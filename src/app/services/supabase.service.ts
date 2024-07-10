@@ -117,13 +117,13 @@ export class SupabaseService {
     return data;
   }
 
-  async adicionarCategoria(categoria: any) {
+  async adicionarCategoria(categoria: { nome: string }) {
     const { data, error } = await this.supabaseClient
       .from('categoria') 
-      .insert([categoria.nome]);
+      .insert([{ nome: categoria.nome }]);
 
     if (error) {
-      console.error('Erro ao adicionar categoria:', error);
+      console.error('Erro ao adicionar categoria SUPABASE:', error);
     }
 
     return { data, error };
